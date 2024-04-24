@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -22,6 +23,14 @@ class HomeBody extends StatefulWidget {
 class _HomeBodyState extends State<HomeBody> {
 
   double appBarIconWidth = 30.0;
+
+  final List<ChartData> chartData = [
+    ChartData(2010, 35),
+    ChartData(2011, 13),
+    ChartData(2012, 34),
+    ChartData(2013, 27),
+    ChartData(2014, 40)
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +88,10 @@ class _HomeBodyState extends State<HomeBody> {
           SizedBox(height: 10,),
 
           Container(
-            width: 10,
-            height: Ma,
+            width: MediaQuery.of(context).size.width,
+            height: 130,
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
               gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
@@ -91,7 +101,39 @@ class _HomeBodyState extends State<HomeBody> {
                 ],
               ),
             ),
-          )
+
+            child: Row(
+
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Earnings",style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w400),),
+                    Text("\$5.000",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w600),),
+                    Text("\$435 this day",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.w300),),
+                  ],
+                ),
+
+                Container(
+
+                )
+                SfCartesianChart(
+                    series: <CartesianSeries>[
+                      // Renders spline chart
+                      SplineSeries<ChartData, int>(
+                          dataSource: chartData,
+                          xValueMapper: (ChartData data, _) => data.x,
+                          yValueMapper: (ChartData data, _) => data.y
+                      )
+                    ]
+                )
+
+
+              ],
+            ),
+
+          ),
 
 
 
@@ -131,5 +173,12 @@ class _HomeBodyState extends State<HomeBody> {
       ],
     );
   }
+}
+
+
+class ChartData {
+  ChartData(this.x, this.y);
+  final int x;
+  final double? y;
 }
 
