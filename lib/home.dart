@@ -26,12 +26,10 @@ class _HomeBodyState extends State<HomeBody> {
       padding: EdgeInsets.all(16),
       child: Column(
         children: [
-          SizedBox(height: 20,),
+
           Row(
             children: [
-              Icon(Icons.sunny,color: Colors.green,),
-              SizedBox(width: 5,),
-              Text("GOOD MORNİNG",style: TextStyle(color: Colors.green,fontSize: 16))
+              greetingText(),
             ],
           )
         ],
@@ -43,12 +41,31 @@ class _HomeBodyState extends State<HomeBody> {
 
 
 
-  Row getDayTime(){
 
 
+  Row greetingText(){
+
+    var hour = DateTime.now().hour;
+    String greetingText;
+    Icon icon = Icon(Icons.sunny_snowing,color: Colors.green,);
+    if (hour >= 6 && hour < 12) {
+      greetingText = "Good Morning";
+      icon = Icon(Icons.sunny_snowing,color: Colors.green,);
+    } else if (hour >= 12 && hour < 18) {
+      greetingText = "Good Day";
+      icon = Icon(Icons.sunny,color: Colors.green,);
+    } else {
+      greetingText = "Good Night";
+      icon = Icon(Icons.nights_stay,color: Colors.green,);
+    }
 
     return Row(
-      children: [],
+
+      children: [
+        icon,
+        SizedBox(width: 5,),
+        Text(greetingText,style: TextStyle(color: Colors.green,fontSize: 16))
+      ],
     );
   }
 }
