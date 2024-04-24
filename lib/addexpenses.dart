@@ -2,27 +2,46 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:unilive/categorywidget.dart';
 
 const int DF_CLR = 0XFF07873A;
 const double SPC_BTW = 15.0;
-String incomeValue = '';
-String incomeamountValue = '';
+String expenseValue = '';
+String expenseamountValue = '';
 
-class AddEarnings extends StatefulWidget {
-  const AddEarnings({super.key});
+Map<String, String> categoryMap = {
+  "Choose a icon": "Select a icon",
+  "assets/icons/car.png": "Car",
+  "assets/icons/clothes.png": "Clothes",
+  "assets/icons/shop.png": "Shop",
+  "assets/icons/eat.png": "Eat",
+  "assets/icons/gifts.png": "Gifts",
+  "assets/icons/education10x.png": "Education",
+  "assets/icons/insurance.png": "Insurance",
+  "assets/icons/childrensproducts.png": "Childrens Products",
+  "assets/icons/taxes.png": "Taxes",
+  "assets/icons/utilities.png": "Utilities",
+  "assets/icons/recreationandentertainment.png": "Recreation and Entertainment",
+  "assets/icons/housing.png": "Housing",
+  "assets/icons/petsupplies.png": "Pet Supplies",
+  "assets/icons/medicine.png": "Medicine",
+};
+
+class AddExpenes extends StatefulWidget {
+  const AddExpenes({super.key});
 
   @override
-  State<AddEarnings> createState() => _MainPageState();
+  State<AddExpenes> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<AddEarnings> {
+class _MainPageState extends State<AddExpenes> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
         canPop: false,
         child: Scaffold(
           appBar: MyAppBar(),
-          body: MyBody(),
+          body: SingleChildScrollView(child: MyBody()),
         ));
   }
 }
@@ -37,10 +56,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
-      elevation: 0, // gölgeyi kaldırır
+      elevation: 0,
+      shadowColor: Colors.white,
+      surfaceTintColor: Colors.white,
       centerTitle: true,
       title: Text(
-        "Add earnings",
+        "Add expenses",
         style: TextStyle(color: Colors.black),
       ),
       leading: IconButton(
@@ -62,6 +83,8 @@ class MyBody extends StatefulWidget {
 }
 
 class _MyBodyState extends State<MyBody> {
+  String? selectedImage;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -77,7 +100,7 @@ class _MyBodyState extends State<MyBody> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Enter the name of the income",
+                    "Enter the name of the expense",
                     style: TextStyle(fontSize: 15),
                   ),
                   SizedBox(height: 20),
@@ -88,14 +111,27 @@ class _MyBodyState extends State<MyBody> {
                       decoration: InputDecoration(hintText: "..."),
                       onChanged: (value) {
                         setState(() {
-                          incomeValue = value;
+                          expenseValue = value;
                         });
                       },
                     ),
                   ),
                   SizedBox(height: 15),
                   Text(
-                    "Enter the amount of income",
+                    "Select an expense category",
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  SizedBox(height: 15),
+                  CategorySelectorWidget(
+                    onImageSelected: (imagePath) {
+                      setState(() {
+                        selectedImage = imagePath;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 15),
+                  Text(
+                    "Enter the amount of expense",
                     style: TextStyle(fontSize: 15),
                   ),
                   SizedBox(height: 25),
@@ -114,7 +150,7 @@ class _MyBodyState extends State<MyBody> {
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
                             setState(() {
-                              incomeamountValue = value;
+                              expenseamountValue = value;
                             });
                           },
                         ),
@@ -161,7 +197,8 @@ class _MyBodyState extends State<MyBody> {
                 ),
               ),
               onPressed: () {
-                print("Name : $incomeValue Value : $incomeamountValue");
+                print(
+                    "Name : $expenseValue Value : $expenseamountValue Choose : ${categoryMap[selectedImage]}");
               },
               child: Text(
                 'Save',

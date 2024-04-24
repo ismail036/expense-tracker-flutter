@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:unilive/addcategory.dart';
 import 'package:unilive/addearnings.dart';
+import 'package:unilive/addexpenses.dart';
 import 'package:unilive/home.dart';
 
 void main() {
@@ -22,13 +23,14 @@ class MyApp extends StatelessWidget {
 
     return SafeArea(
       child: MaterialApp(
-        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          appBarTheme: AppBarTheme(elevation: 0),
           fontFamily: 'DINPro',
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const Home(),
+        home: const AddExpenes(),
       ),
     );
   }
