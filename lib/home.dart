@@ -308,7 +308,20 @@ class _HomeBodyState extends State<HomeBody> {
 
             SizedBox(height: 20,),
 
-            Text("Expense by category"),
+            Text("Expense by category",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600)),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("This month - ${abbreviatedMonths[currentMonth-1]}" , style: TextStyle(color: Colors.grey[500]),),
+                GestureDetector(
+                  onTap: (){},
+                  child: Text('+ add new category', style: TextStyle(color: Color(0xff41B746),decoration: TextDecoration.underline, decorationColor:Color(0xff41B746)),),
+                ),
+
+              ],
+            ),
+
 
             Wrap(
               children: [
@@ -413,17 +426,11 @@ class _HomeBodyState extends State<HomeBody> {
                 ),
               ],
             )
-
-
           ],
         ),
       ),
     );
   }
-
-
-
-
 
 
 
