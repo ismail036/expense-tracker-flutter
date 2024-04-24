@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, unnecessary_null_comparison, prefer_const_literals_to_create_immutables, constant_identifier_names, unnecessary_import
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, unnecessary_null_comparison, prefer_const_literals_to_create_immutables, constant_identifier_names, unnecessary_import, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -168,7 +168,7 @@ class _MyBodyState extends State<MyBody> {
                 ),
               ),
               onPressed: () {
-                // İkinci butona tıklandığında yapılacak işlemler
+                print("Selected : ${categoryMap[selectedImage]}");
               },
               child: Text(
                 'Save',

@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:unilive/iconwidget.dart';
 
 const int DF_CLR = 0XFF07873A;
-const double appBarIconWidth = 40.0;
 const double SPC_BTW = 15.0;
+String incomeValue = '';
+String incomeamountValue = '';
 
 class AddEarnings extends StatefulWidget {
   const AddEarnings({super.key});
@@ -79,7 +79,7 @@ class _MyBodyState extends State<MyBody> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Name of category",
+                    "Enter the name of the income",
                     style: TextStyle(fontSize: 15),
                   ),
                   SizedBox(height: 20),
@@ -87,26 +87,39 @@ class _MyBodyState extends State<MyBody> {
                     height: 20,
                     width: MediaQuery.of(context).size.width - 40,
                     child: TextField(
-                      enabled: false,
-                      decoration: InputDecoration(hintText: selectedImage),
+                      decoration: InputDecoration(hintText: "..."),
+                      onChanged: (value) {
+                        setState(() {
+                          incomeValue = value;
+                        });
+                      },
                     ),
                   ),
                   SizedBox(height: 15),
                   Text(
-                    "Select the icon category",
+                    "Enter the amount of income",
                     style: TextStyle(fontSize: 15),
                   ),
                   SizedBox(height: 25),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ImageSelectorWidget(
-                        onImageSelected: (imagePath) {
-                          setState(() {
-                            selectedImage = imagePath;
-                          });
-                        },
+                      SizedBox(
+                        height: 20,
+                        width: MediaQuery.of(context).size.width - 300,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: "\$",
+                            suffixText: "\$",
+                          ),
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) {
+                            setState(() {
+                              incomeamountValue = value;
+                            });
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -150,7 +163,7 @@ class _MyBodyState extends State<MyBody> {
                 ),
               ),
               onPressed: () {
-                // İkinci butona tıklandığında yapılacak işlemler
+                print("Name : $incomeValue Value : $incomeamountValue");
               },
               child: Text(
                 'Save',
