@@ -308,7 +308,113 @@ class _HomeBodyState extends State<HomeBody> {
 
             SizedBox(height: 20,),
 
-            Text("Expense by category")
+            Text("Expense by category"),
+
+            Wrap(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(4),
+                  width: MediaQuery.of(context).size.width / 3.5,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffEBEFF3),
+                      width: 2,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(4),
+                  width: MediaQuery.of(context).size.width / 3.5,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffEBEFF3),
+                      width: 2,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(4),
+                  width: MediaQuery.of(context).size.width / 3.5,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffEBEFF3),
+                      width: 2,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(4),
+                  width: MediaQuery.of(context).size.width / 3.5,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffEBEFF3),
+                      width: 2,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(4),
+                  width: MediaQuery.of(context).size.width / 3.5,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffEBEFF3),
+                      width: 2,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(4),
+                  width: MediaQuery.of(context).size.width / 3.5,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffEBEFF3),
+                      width: 2,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(4),
+                  width: MediaQuery.of(context).size.width / 3.5,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffEBEFF3),
+                      width: 2,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(4),
+                  width: MediaQuery.of(context).size.width / 3.5,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffEBEFF3),
+                      width: 2,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(4),
+                  width: MediaQuery.of(context).size.width / 3.5,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffEBEFF3),
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ],
+            )
+
+
 
 
 
