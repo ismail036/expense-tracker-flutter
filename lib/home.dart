@@ -30,7 +30,10 @@ class HomeBody extends StatefulWidget {
 class _HomeBodyState extends State<HomeBody> {
   double appBarIconWidth = 30.0;
 
+
   int touchedIndex = -1;
+
+  String selectedTimeFilter = "day";
 
   List<String> abbreviatedMonths = [
     'Jan',
@@ -738,78 +741,118 @@ class _HomeBodyState extends State<HomeBody> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Color(0xffEBEFF3),
-                        width: 2,
+                  GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        selectedTimeFilter = "day";
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: selectedTimeFilter == "day" ? Colors.green : Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Color(0xffEBEFF3),
+                          width: 2,
+                        ),
                       ),
+                      width: 120,
+                      height: 40,
+                      child: Center(
+                          child: Text(
+                            "A day",
+                            style: TextStyle(color: selectedTimeFilter == "day" ?  Colors.white : Colors.grey[500]),
+                          )),
                     ),
-                    width: 120,
-                    height: 40,
-                    child: Center(
-                        child: Text(
-                      "A day",
-                      style: TextStyle(color: Colors.grey[500]),
-                    )),
+                  ),
+
+
+                  SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        setState(() {
+                          selectedTimeFilter = "week";
+                        });
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: selectedTimeFilter == "week" ? Colors.green : Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Color(0xffEBEFF3),
+                          width: 2,
+                        ),
+                      ),
+                      width: 120,
+                      height: 40,
+                      child: Center(
+                          child: Text(
+                            "A week",
+                            style: TextStyle(color:  selectedTimeFilter == "week" ?  Colors.white : Colors.grey[500]),
+                          )),
+                    ),
                   ),
                   SizedBox(
                     width: 10,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Color(0xffEBEFF3),
-                        width: 2,
+                  GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        setState(() {
+                          selectedTimeFilter = "month";
+                        });
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: selectedTimeFilter == "month" ? Colors.green : Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Color(0xffEBEFF3),
+                          width: 2,
+                        ),
                       ),
+                      width: 120,
+                      height: 40,
+                      child: Center(
+                          child: Text(
+                            "A month",
+                            style: TextStyle(color: selectedTimeFilter == "month" ?  Colors.white : Colors.grey[500]),
+                          )),
                     ),
-                    width: 120,
-                    height: 40,
-                    child: Center(
-                        child: Text(
-                      "A week",
-                      style: TextStyle(color: Colors.grey[500]),
-                    )),
                   ),
                   SizedBox(
                     width: 10,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Color(0xffEBEFF3),
-                        width: 2,
+                  GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        setState(() {
+                          selectedTimeFilter = "year";
+                        });
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: selectedTimeFilter == "year" ? Colors.green : Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Color(0xffEBEFF3),
+                          width: 2,
+                        ),
                       ),
+                      width: 120,
+                      height: 40,
+                      child: Center(
+                          child: Text(
+                            "A year",
+                            style: TextStyle(color: selectedTimeFilter == "year" ?  Colors.white : Colors.grey[500]),
+                          )),
                     ),
-                    width: 120,
-                    height: 40,
-                    child: Center(
-                        child: Text(
-                      "A month",
-                      style: TextStyle(color: Colors.grey[500]),
-                    )),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Color(0xffEBEFF3),
-                        width: 2,
-                      ),
-                    ),
-                    width: 120,
-                    height: 40,
-                    child: Center(
-                        child: Text(
-                      "A year",
-                      style: TextStyle(color: Colors.grey[500]),
-                    )),
                   ),
                   SizedBox(
                     width: 10,
