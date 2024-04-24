@@ -66,12 +66,11 @@ flutter:
         - asset: fonts\DINPro\DINPro-Bold.ttf
         - asset: fonts\DINPro\DINPro-Light.ttf
         - asset: fonts\DINPro\DINPro-Medium.ttf
-  
-  assets:
-    - assets/icons
-  
-  # To add assets to your application, add an assets section, like this:
 
+  # To add assets to your application, add an assets section, like this:
+assets:
+  - assets/icons
+  
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
