@@ -147,7 +147,7 @@ class _MyBodyState extends State<MyBody> {
                 ),
               ),
               onPressed: () {
-                // İlk butona tıklandığında yapılacak işlemler
+                Navigator.of(context).pop();
               },
               child: Text(
                 'Cancel',
