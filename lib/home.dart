@@ -858,9 +858,96 @@ class _HomeBodyState extends State<HomeBody> {
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
                   ))),
             ]),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 40,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                    Text(" Taxes",style: TextStyle(fontSize: 18),),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 40,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.green,
+                        ),
+                      ),
+                    ),
+                    Text(" Gift",style: TextStyle(fontSize: 18),),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 40,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                    Text(" Eat",style: TextStyle(fontSize: 18),),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 40,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    Text(" Other",style: TextStyle(fontSize: 18),),
+                  ],
+                ),
+              ],
+            ),
+
+            SizedBox(height: 20,),
+
+            Center(
+              child: Text(
+                'Privacy policy',
+                style: TextStyle(
+                    color: Color(0xff41B746),
+                    decoration: TextDecoration.underline,
+                    decorationColor: Color(0xff41B746),
+                    fontSize: 20
+                ),
+
+              ),
+            ),
+
+
+
+
+
           ],
         ),
       ),
+
     );
   }
 
