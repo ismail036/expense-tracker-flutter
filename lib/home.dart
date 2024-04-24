@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_print
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:unilive/addcategory.dart';
@@ -452,16 +453,15 @@ class _HomeBodyState extends State<HomeBody> {
                       width: 2,
                     ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffEBEFF3),
-                      width: 2,
-                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/icons/shop.png",scale: 6,),
+                      Text("Shops"),
+                      SizedBox(height: 5,),
+                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
+                      
+                    ],
                   ),
                 ),
                 Container(
@@ -474,16 +474,15 @@ class _HomeBodyState extends State<HomeBody> {
                       width: 2,
                     ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffEBEFF3),
-                      width: 2,
-                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/icons/car.png",scale: 7 ,),
+                      Text("Shops"),
+                      SizedBox(height: 5,),
+                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
+
+                    ],
                   ),
                 ),
                 Container(
@@ -496,16 +495,15 @@ class _HomeBodyState extends State<HomeBody> {
                       width: 2,
                     ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffEBEFF3),
-                      width: 2,
-                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/icons/medicine.png",scale: 6,),
+                      Text("Shops"),
+                      SizedBox(height: 5,),
+                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
+
+                    ],
                   ),
                 ),
                 Container(
@@ -518,16 +516,15 @@ class _HomeBodyState extends State<HomeBody> {
                       width: 2,
                     ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffEBEFF3),
-                      width: 2,
-                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/icons/clothes.png",scale: 6,),
+                      Text("Shops"),
+                      SizedBox(height: 5,),
+                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
+
+                    ],
                   ),
                 ),
                 Container(
@@ -539,10 +536,182 @@ class _HomeBodyState extends State<HomeBody> {
                       color: Color(0xffEBEFF3),
                       width: 2,
                     ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/icons/petsupplies.png",scale: 6,),
+                      Text("Shops"),
+                      SizedBox(height: 5,),
+                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
+
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(4),
+                  width: MediaQuery.of(context).size.width / 3.5,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffEBEFF3),
+                      width: 2,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/icons/recreationandentertainment.png",scale: 6,),
+                      Text("Shops"),
+                      SizedBox(height: 5,),
+                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
+
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(4),
+                  width: MediaQuery.of(context).size.width / 3.5,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffEBEFF3),
+                      width: 2,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/icons/taxes.png",scale: 6,),
+                      Text("Shops"),
+                      SizedBox(height: 5,),
+                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
+
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(4),
+                  width: MediaQuery.of(context).size.width / 3.5,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffEBEFF3),
+                      width: 2,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/icons/eat.png",scale: 6,),
+                      Text("Shops"),
+                      SizedBox(height: 5,),
+                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
+
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(4),
+                  width: MediaQuery.of(context).size.width / 3.5,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffEBEFF3),
+                      width: 2,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/icons/gifts.png",scale: 6,),
+                      Text("Shops"),
+                      SizedBox(height: 5,),
+                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
+
+                    ],
                   ),
                 ),
               ],
-            )
+            ),
+
+            SizedBox(height: 10,),
+
+            Text("Exenses statistics",style: TextStyle(fontSize: 18),),
+
+            SizedBox(height: 10,),
+
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Color(0xffEBEFF3),
+                        width: 2,
+                      ),
+                    ),
+                    width: 120,
+                    height: 40,
+                    child: Center(child: Text("A day" , style: TextStyle(color: Colors.grey[500]),)),
+                  ),
+                  SizedBox(width: 10,),
+
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Color(0xffEBEFF3),
+                        width: 2,
+                      ),
+                    ),
+                    width: 120,
+                    height: 40,
+                    child: Center(child: Text("A week" , style: TextStyle(color: Colors.grey[500]),)),
+                  ),
+                  SizedBox(width: 10,),
+
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Color(0xffEBEFF3),
+                        width: 2,
+                      ),
+                    ),
+                    width: 120,
+                    height: 40,
+                    child: Center(child: Text("A month" , style: TextStyle(color: Colors.grey[500]),)),
+                  ),
+                  SizedBox(width: 10,),
+
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Color(0xffEBEFF3),
+                        width: 2,
+                      ),
+                    ),
+                    width: 120,
+                    height: 40,
+                    child: Center(child: Text("A year" , style: TextStyle(color: Colors.grey[500]),)),
+                  ),
+                  SizedBox(width: 10,),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 15,),
+
+
+
+
+
+
+            
           ],
         ),
       ),
