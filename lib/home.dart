@@ -415,13 +415,6 @@ class _HomeBodyState extends State<HomeBody> {
             )
 
 
-
-
-
-
-
-
-
           ],
         ),
       ),
