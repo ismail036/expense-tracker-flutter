@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:unilive/addcategory.dart';
+import 'package:unilive/addearnings.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -254,7 +255,13 @@ class _HomeBodyState extends State<HomeBody> {
               height: 10,
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddEarnings(),
+                    ));
+              },
               child: Text(
                 '+ add earnings',
                 style: TextStyle(
@@ -456,11 +463,19 @@ class _HomeBodyState extends State<HomeBody> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/icons/shop.png",scale: 6,),
+                      Image.asset(
+                        "assets/icons/shop.png",
+                        scale: 6,
+                      ),
                       Text("Shops"),
-                      SizedBox(height: 5,),
-                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
-                      
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "\$855",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w500),
+                      )
                     ],
                   ),
                 ),
@@ -477,11 +492,19 @@ class _HomeBodyState extends State<HomeBody> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/icons/car.png",scale: 7 ,),
+                      Image.asset(
+                        "assets/icons/car.png",
+                        scale: 7,
+                      ),
                       Text("Shops"),
-                      SizedBox(height: 5,),
-                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
-
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "\$855",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w500),
+                      )
                     ],
                   ),
                 ),
@@ -498,11 +521,19 @@ class _HomeBodyState extends State<HomeBody> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/icons/medicine.png",scale: 6,),
+                      Image.asset(
+                        "assets/icons/medicine.png",
+                        scale: 6,
+                      ),
                       Text("Shops"),
-                      SizedBox(height: 5,),
-                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
-
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "\$855",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w500),
+                      )
                     ],
                   ),
                 ),
@@ -519,11 +550,19 @@ class _HomeBodyState extends State<HomeBody> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/icons/clothes.png",scale: 6,),
+                      Image.asset(
+                        "assets/icons/clothes.png",
+                        scale: 6,
+                      ),
                       Text("Shops"),
-                      SizedBox(height: 5,),
-                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
-
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "\$855",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w500),
+                      )
                     ],
                   ),
                 ),
@@ -540,11 +579,19 @@ class _HomeBodyState extends State<HomeBody> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/icons/petsupplies.png",scale: 6,),
+                      Image.asset(
+                        "assets/icons/petsupplies.png",
+                        scale: 6,
+                      ),
                       Text("Shops"),
-                      SizedBox(height: 5,),
-                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
-
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "\$855",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w500),
+                      )
                     ],
                   ),
                 ),
@@ -561,11 +608,19 @@ class _HomeBodyState extends State<HomeBody> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/icons/recreationandentertainment.png",scale: 6,),
+                      Image.asset(
+                        "assets/icons/recreationandentertainment.png",
+                        scale: 6,
+                      ),
                       Text("Shops"),
-                      SizedBox(height: 5,),
-                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
-
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "\$855",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w500),
+                      )
                     ],
                   ),
                 ),
@@ -582,11 +637,19 @@ class _HomeBodyState extends State<HomeBody> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/icons/taxes.png",scale: 6,),
+                      Image.asset(
+                        "assets/icons/taxes.png",
+                        scale: 6,
+                      ),
                       Text("Shops"),
-                      SizedBox(height: 5,),
-                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
-
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "\$855",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w500),
+                      )
                     ],
                   ),
                 ),
@@ -603,11 +666,19 @@ class _HomeBodyState extends State<HomeBody> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/icons/eat.png",scale: 6,),
+                      Image.asset(
+                        "assets/icons/eat.png",
+                        scale: 6,
+                      ),
                       Text("Shops"),
-                      SizedBox(height: 5,),
-                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
-
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "\$855",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w500),
+                      )
                     ],
                   ),
                 ),
@@ -624,23 +695,34 @@ class _HomeBodyState extends State<HomeBody> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/icons/gifts.png",scale: 6,),
+                      Image.asset(
+                        "assets/icons/gifts.png",
+                        scale: 6,
+                      ),
                       Text("Shops"),
-                      SizedBox(height: 5,),
-                      Text("\$855",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),)
-
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "\$855",
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w500),
+                      )
                     ],
                   ),
                 ),
               ],
             ),
-
-            SizedBox(height: 10,),
-
-            Text("Exenses statistics",style: TextStyle(fontSize: 18),),
-
-            SizedBox(height: 10,),
-
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Exenses statistics",
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(
+              height: 10,
+            ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -655,10 +737,15 @@ class _HomeBodyState extends State<HomeBody> {
                     ),
                     width: 120,
                     height: 40,
-                    child: Center(child: Text("A day" , style: TextStyle(color: Colors.grey[500]),)),
+                    child: Center(
+                        child: Text(
+                      "A day",
+                      style: TextStyle(color: Colors.grey[500]),
+                    )),
                   ),
-                  SizedBox(width: 10,),
-
+                  SizedBox(
+                    width: 10,
+                  ),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -669,10 +756,15 @@ class _HomeBodyState extends State<HomeBody> {
                     ),
                     width: 120,
                     height: 40,
-                    child: Center(child: Text("A week" , style: TextStyle(color: Colors.grey[500]),)),
+                    child: Center(
+                        child: Text(
+                      "A week",
+                      style: TextStyle(color: Colors.grey[500]),
+                    )),
                   ),
-                  SizedBox(width: 10,),
-
+                  SizedBox(
+                    width: 10,
+                  ),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -683,10 +775,15 @@ class _HomeBodyState extends State<HomeBody> {
                     ),
                     width: 120,
                     height: 40,
-                    child: Center(child: Text("A month" , style: TextStyle(color: Colors.grey[500]),)),
+                    child: Center(
+                        child: Text(
+                      "A month",
+                      style: TextStyle(color: Colors.grey[500]),
+                    )),
                   ),
-                  SizedBox(width: 10,),
-
+                  SizedBox(
+                    width: 10,
+                  ),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -697,21 +794,21 @@ class _HomeBodyState extends State<HomeBody> {
                     ),
                     width: 120,
                     height: 40,
-                    child: Center(child: Text("A year" , style: TextStyle(color: Colors.grey[500]),)),
+                    child: Center(
+                        child: Text(
+                      "A year",
+                      style: TextStyle(color: Colors.grey[500]),
+                    )),
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                 ],
               ),
             ),
-
-            SizedBox(height: 15,),
-
-
-
-
-
-
-            
+            SizedBox(
+              height: 15,
+            ),
           ],
         ),
       ),
