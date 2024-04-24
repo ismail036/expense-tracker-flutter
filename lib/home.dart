@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:unilive/addcategory.dart';
 import 'package:unilive/addearnings.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:unilive/addexpenses.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -412,7 +413,13 @@ class _HomeBodyState extends State<HomeBody> {
               height: 10,
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddExpenes(),
+                    ));
+              },
               child: Text(
                 '+ add expense',
                 style: TextStyle(
@@ -813,55 +820,44 @@ class _HomeBodyState extends State<HomeBody> {
             SizedBox(
               height: 15,
             ),
-
-
-
-
-                Stack(
-                  children: [
-                    Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 300,
-                    child: PieChart(
-                      PieChartData(
-                        pieTouchData: PieTouchData(
-                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                            setState(() {
-                              if (!event.isInterestedForInteractions ||
-                                  pieTouchResponse == null ||
-                                  pieTouchResponse.touchedSection == null) {
-                                touchedIndex = -1;
-                                return;
-                              }
-                              touchedIndex = pieTouchResponse
-                                  .touchedSection!.touchedSectionIndex;
-                            });
-                          },
-                        ),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        sectionsSpace: 1,
-                        centerSpaceRadius: MediaQuery.of(context).size.width / 4,
-                        sections: showingSections(),
-                      ),
+            Stack(children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 300,
+                child: PieChart(
+                  PieChartData(
+                    pieTouchData: PieTouchData(
+                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                        setState(() {
+                          if (!event.isInterestedForInteractions ||
+                              pieTouchResponse == null ||
+                              pieTouchResponse.touchedSection == null) {
+                            touchedIndex = -1;
+                            return;
+                          }
+                          touchedIndex = pieTouchResponse
+                              .touchedSection!.touchedSectionIndex;
+                        });
+                      },
                     ),
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    sectionsSpace: 1,
+                    centerSpaceRadius: MediaQuery.of(context).size.width / 4,
+                    sections: showingSections(),
                   ),
-                    
-                    Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 300,
-                        child: Center(child: Text("\$3.250" , style: TextStyle(fontSize: 30,fontWeight: FontWeight.w700),))
-                    ),
-
-                  ]
                 ),
-
-
-
-
-
-
+              ),
+              Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 300,
+                  child: Center(
+                      child: Text(
+                    "\$3.250",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                  ))),
+            ]),
           ],
         ),
       ),
@@ -905,7 +901,6 @@ class _HomeBodyState extends State<HomeBody> {
       ],
     );
   }
-
 
   List<PieChartSectionData> showingSections() {
     return List.generate(4, (i) {
