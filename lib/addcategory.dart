@@ -1,9 +1,29 @@
-// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, unnecessary_null_comparison, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, unnecessary_null_comparison, prefer_const_literals_to_create_immutables, constant_identifier_names, unnecessary_import
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:unilive/iconwidget.dart';
 
 const int DF_CLR = 0XFF07873A;
+const double appBarIconWidth = 40.0;
+const double SPC_BTW = 15.0;
+Map<String, String> categoryMap = {
+  "Choose a icon": "Select a icon",
+  "assets/icons/car.png": "Car",
+  "assets/icons/clothes.png": "Clothes",
+  "assets/icons/shop.png": "Shop",
+  "assets/icons/eat.png": "Eat",
+  "assets/icons/gifts.png": "Gifts",
+  "assets/icons/education10x.png": "Education",
+  "assets/icons/insurance.png": "Insurance",
+  "assets/icons/childrensproducts.png": "Childrens Products",
+  "assets/icons/taxes.png": "Taxes",
+  "assets/icons/utilities.png": "Utilities",
+  "assets/icons/recreationandentertainment.png": "Recreation and Entertainment",
+  "assets/icons/housing.png": "Housing",
+  "assets/icons/petsupplies.png": "Pet Supplies",
+  "assets/icons/medicine.png": "Medicine",
+};
 
 class AddCategory extends StatefulWidget {
   const AddCategory({super.key});
@@ -59,6 +79,8 @@ class MyBody extends StatefulWidget {
 }
 
 class _MyBodyState extends State<MyBody> {
+  String? selectedImage = "Choose a icon";
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -71,44 +93,88 @@ class _MyBodyState extends State<MyBody> {
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Enter the name of category"),
-                  SizedBox(
-                    height: 15,
+                  Text(
+                    "Name of category",
+                    style: TextStyle(fontSize: 15),
                   ),
+                  SizedBox(height: 20),
                   SizedBox(
                     height: 20,
                     width: MediaQuery.of(context).size.width - 40,
                     child: TextField(
                       enabled: false,
-                      decoration: InputDecoration(hintText: "..."),
+                      decoration:
+                          InputDecoration(hintText: categoryMap[selectedImage]),
                     ),
                   ),
-                  SizedBox(
-                    height: 15,
+                  SizedBox(height: 15),
+                  Text(
+                    "Select the icon category",
+                    style: TextStyle(fontSize: 15),
                   ),
-                  Text("Select the icon category"),
+                  SizedBox(height: 25),
                   Row(
-                    children: [Image.asset("assets/icons/clothes.png")],
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ImageSelectorWidget(
+                        onImageSelected: (imagePath) {
+                          setState(() {
+                            selectedImage = imagePath;
+                          });
+                        },
+                      ),
+                    ],
                   ),
-                  Row(),
                 ],
               ),
             )
           ],
         ),
         Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          ElevatedButton(
-            onPressed: () {
-              // İlk butona tıklandığında yapılacak işlemler
-            },
-            child: Text('Buton 1'),
+          Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(DF_CLR), // Düğme metni rengi
+                side: BorderSide(color: Colors.white, width: 2), // Kenarlık
+                minimumSize: Size(MediaQuery.of(context).size.width / 3, 50),
+                foregroundColor: Color(DF_CLR),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Kenar yuvarlaklığı
+                ),
+              ),
+              onPressed: () {
+                // İlk butona tıklandığında yapılacak işlemler
+              },
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              // İkinci butona tıklandığında yapılacak işlemler
-            },
-            child: Text('Buton 2'),
+          Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white, // Düğme metni rengi
+                side: BorderSide(color: Color(DF_CLR), width: 2), // Kenarlık
+                minimumSize: Size(MediaQuery.of(context).size.width / 3, 50),
+                foregroundColor: Color(DF_CLR),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Kenar yuvarlaklığı
+                ),
+              ),
+              onPressed: () {
+                // İkinci butona tıklandığında yapılacak işlemler
+              },
+              child: Text(
+                'Save',
+                style: TextStyle(color: Color(DF_CLR)),
+              ),
+            ),
           ),
         ]),
       ],
