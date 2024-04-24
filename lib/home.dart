@@ -2,9 +2,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:unilive/addcategory.dart';
 import 'package:unilive/addearnings.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -26,6 +28,8 @@ class HomeBody extends StatefulWidget {
 
 class _HomeBodyState extends State<HomeBody> {
   double appBarIconWidth = 30.0;
+
+  int touchedIndex = -1;
 
   List<String> abbreviatedMonths = [
     'Jan',
@@ -809,6 +813,55 @@ class _HomeBodyState extends State<HomeBody> {
             SizedBox(
               height: 15,
             ),
+
+
+
+
+                Stack(
+                  children: [
+                    Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 300,
+                    child: PieChart(
+                      PieChartData(
+                        pieTouchData: PieTouchData(
+                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                            setState(() {
+                              if (!event.isInterestedForInteractions ||
+                                  pieTouchResponse == null ||
+                                  pieTouchResponse.touchedSection == null) {
+                                touchedIndex = -1;
+                                return;
+                              }
+                              touchedIndex = pieTouchResponse
+                                  .touchedSection!.touchedSectionIndex;
+                            });
+                          },
+                        ),
+                        borderData: FlBorderData(
+                          show: false,
+                        ),
+                        sectionsSpace: 1,
+                        centerSpaceRadius: MediaQuery.of(context).size.width / 4,
+                        sections: showingSections(),
+                      ),
+                    ),
+                  ),
+                    
+                    Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 300,
+                        child: Center(child: Text("\$3.250" , style: TextStyle(fontSize: 30,fontWeight: FontWeight.w700),))
+                    ),
+
+                  ]
+                ),
+
+
+
+
+
+
           ],
         ),
       ),
@@ -851,6 +904,72 @@ class _HomeBodyState extends State<HomeBody> {
         Text(greetingText, style: TextStyle(color: Colors.green, fontSize: 16))
       ],
     );
+  }
+
+
+  List<PieChartSectionData> showingSections() {
+    return List.generate(4, (i) {
+      final isTouched = i == touchedIndex;
+      final fontSize = isTouched ? 16.0 : 16.0;
+      final radius = isTouched ? 25.0 : 25.0;
+      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+      switch (i) {
+        case 0:
+          return PieChartSectionData(
+            color: Colors.blue,
+            value: 40,
+            title: '',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+              shadows: shadows,
+            ),
+          );
+        case 1:
+          return PieChartSectionData(
+            color: Colors.green,
+            value: 30,
+            title: '',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+              shadows: shadows,
+            ),
+          );
+        case 2:
+          return PieChartSectionData(
+            color: Colors.red,
+            value: 15,
+            title: '',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+              shadows: shadows,
+            ),
+          );
+        case 3:
+          return PieChartSectionData(
+            color: Colors.grey,
+            value: 15,
+            title: '',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+              shadows: shadows,
+            ),
+          );
+        default:
+          throw Error();
+      }
+    });
   }
 }
 
