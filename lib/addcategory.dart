@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, unnecessary_null_comparison, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 const int DF_CLR = 0XFF07873A;
 
@@ -64,9 +65,38 @@ class _MyBodyState extends State<MyBody> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(),
-        Row(children: [
-          Text("Name of the category"),
-        ]),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Enter the name of category"),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  SizedBox(
+                    height: 20,
+                    width: MediaQuery.of(context).size.width - 40,
+                    child: TextField(
+                      enabled: false,
+                      decoration: InputDecoration(hintText: "..."),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Text("Select the icon category"),
+                  Row(
+                    children: [Image.asset("assets/icons/clothes.png")],
+                  ),
+                  Row(),
+                ],
+              ),
+            )
+          ],
+        ),
         Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
           ElevatedButton(
             onPressed: () {
@@ -82,20 +112,6 @@ class _MyBodyState extends State<MyBody> {
           ),
         ]),
       ],
-    );
-  }
-}
-
-class CustomTextField extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: 'Altı Çizili Metin',
-        labelStyle: TextStyle(
-          decoration: TextDecoration.underline,
-        ),
-      ),
     );
   }
 }
