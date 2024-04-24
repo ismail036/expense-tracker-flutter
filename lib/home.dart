@@ -116,18 +116,18 @@ class _HomeBodyState extends State<HomeBody> {
                 ),
 
                 Container(
+                    child:  SfCartesianChart(
+                        series: <CartesianSeries>[
+                          // Renders spline chart
+                          SplineSeries<ChartData, int>(
+                              dataSource: chartData,
+                              xValueMapper: (ChartData data, _) => data.x,
+                              yValueMapper: (ChartData data, _) => data.y
+                          )
+                        ]
+                    )
+                )
 
-                )
-                SfCartesianChart(
-                    series: <CartesianSeries>[
-                      // Renders spline chart
-                      SplineSeries<ChartData, int>(
-                          dataSource: chartData,
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y
-                      )
-                    ]
-                )
 
 
               ],
