@@ -8,6 +8,9 @@ import 'package:unilive/addcategory.dart';
 import 'package:unilive/addearnings.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:unilive/addexpenses.dart';
+import 'package:fl_chart/fl_chart.dart';
+
+import 'category.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -464,33 +467,43 @@ class _HomeBodyState extends State<HomeBody> {
             ),
             Wrap(
               children: [
-                Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffEBEFF3),
-                      width: 2,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Category(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(4),
+                    width: MediaQuery.of(context).size.width / 3.5,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xffEBEFF3),
+                        width: 2,
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/icons/shop.png",
-                        scale: 6,
-                      ),
-                      Text("Shops"),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "\$855",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w500),
-                      )
-                    ],
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/icons/shop.png",
+                          scale: 6,
+                        ),
+                        Text("Shops"),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "\$855",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Container(
