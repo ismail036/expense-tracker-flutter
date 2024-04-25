@@ -48,49 +48,57 @@ class _CategoryBodyState extends State<CategoryBody> {
     expenseList.add(expense4);
     expenseList.add(expense5);
 
-    return SingleChildScrollView(
-      child: Container(
-        child: Column(
-          children: [
-            Container(
-              color: Color(0xff07873A),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      print("Container tapped");
-                    },
-                    child: Icon(
-                      Icons.arrow_back_ios_new_rounded,
+    return Container(
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            color: Color(0xff07873A),
+            height: 50,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Home(),
+                        ));
+                  },
+                  child: Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  "Shops",
+                  style: TextStyle(color: Colors.white, fontSize: 22),
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.edit_note,
                       color: Colors.white,
                     ),
-                  ),
-                  Text(
-                    "Shops",
-                    style: TextStyle(color: Colors.white, fontSize: 22),
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.edit_note,
-                        color: Colors.white,
-                      ),
-                      Icon(
-                        Icons.delete,
-                        color: Colors.white,
-                      ),
-                    ],
-                  )
-                ],
-              ),
+                    Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                  ],
+                )
+              ],
             ),
-            Stack(
+          ),
+
+          Container(
+            height: MediaQuery.of(context).size.height - 80,
+            child: Stack(
               children: [
                 Container(
                   padding: EdgeInsets.all(10),
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height - 80,
                   color: Color(0xff07873A),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,7 +383,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height / 2.2),
+                        top: MediaQuery.of(context).size.height / 2.4),
                     padding: EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -510,8 +518,8 @@ class _CategoryBodyState extends State<CategoryBody> {
                 )
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
