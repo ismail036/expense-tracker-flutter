@@ -84,10 +84,14 @@ class _HomeBodyState extends State<HomeBody> {
     DbHelper dbHelper = DbHelper();
     await dbHelper.open();
     data = await dbHelper.getData();
+    earningData.clear();
+    expenseData.clear();
 
     for(var d in data){
       if(d["category"] == "salary"){
         earningData.add(d);
+      }else{
+        expenseData.add(d);
       }
     }
 
@@ -129,9 +133,7 @@ class _HomeBodyState extends State<HomeBody> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      getEarning();
-    });
+    getEarning();
     return Container(
       padding: EdgeInsets.all(16),
       child: SingleChildScrollView(
