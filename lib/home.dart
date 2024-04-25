@@ -140,7 +140,7 @@ class _HomeBodyState extends State<HomeBody> {
               height: 10,
             ),
             Text(
-              selectedCurrency,
+              "Recent earnings",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
             ),
             SizedBox(
