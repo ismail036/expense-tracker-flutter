@@ -115,6 +115,7 @@ Map<String, Map<String, String>> currencies = {
   "EUR": {"name": "Euro", "symbol": "€"},
   "USD": {"name": "US Dollar", "symbol": "\$"},
   "RUB": {"name": "Russian Ruble", "symbol": "RUB"},
+  "HUF": {"name": "Hungarian forint", "symbol": "Ft"},
   "BRL": {"name": "Brazilian Real", "symbol": "R\$"},
   "AED": {"name": "United Arab Emirates Dirham", "symbol": "AED"},
   "AFN": {"name": "Afghan Afghani", "symbol": "AFN"},
