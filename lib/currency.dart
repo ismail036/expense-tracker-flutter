@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:live_currency_rate/live_currency_rate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unilive/core/extensions/l10n.extensions.dart';
 
 const int defaultColor = 0xFF07873A;
 const double spaceBetween = 15.0;
@@ -33,7 +34,7 @@ class _CurrencyState extends State<Currency> {
       shadowColor: Colors.white,
       centerTitle: true,
       title: Text(
-        "Currency Converter",
+        context.translate.currencyconverter,
         style: TextStyle(color: Colors.black),
       ),
       leading: IconButton(
@@ -114,7 +115,7 @@ class _MyBodyState extends State<MyBody> {
 Map<String, Map<String, String>> currencies = {
   "EUR": {"name": "Euro", "symbol": "€"},
   "USD": {"name": "US Dollar", "symbol": "\$"},
-  "RUB": {"name": "Russian Ruble", "symbol": "RUB"},
+  "RUB": {"name": "Russian Ruble", "symbol": "₽"},
   "HUF": {"name": "Hungarian forint", "symbol": "Ft"},
   "BRL": {"name": "Brazilian Real", "symbol": "R\$"},
   "AED": {"name": "United Arab Emirates Dirham", "symbol": "AED"},

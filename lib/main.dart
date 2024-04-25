@@ -7,6 +7,7 @@ import 'package:unilive/addearnings.dart';
 import 'package:unilive/addexpenses.dart';
 import 'package:unilive/currency.dart';
 import 'package:unilive/home.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,6 +26,17 @@ class MyApp extends StatelessWidget {
     return SafeArea(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        //
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        // Başlangıç dilini burada ayarlayabilirsiniz, örneğin İngilizce
+        locale: const Locale('en'),
+        // Üstte belirttiğiniz desteklenen diller arasında öncelikli olarak kullanılacak dil
+        // Varsayılan olarak ayarlanmamışsa cihazın yerel dilini kullanır
+        // localeResolutionCallback: (locale, supportedLocales) {
+        //   return locale;
+        // },,
+        //
         theme: ThemeData(
           appBarTheme: AppBarTheme(elevation: 0),
           fontFamily: 'DINPro',
