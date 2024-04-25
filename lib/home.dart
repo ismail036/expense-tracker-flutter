@@ -9,6 +9,7 @@ import 'package:unilive/addearnings.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:unilive/addexpenses.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:unilive/currency.dart';
 
 import 'category.dart';
 
@@ -33,8 +34,9 @@ class HomeBody extends StatefulWidget {
 class _HomeBodyState extends State<HomeBody> {
   double appBarIconWidth = 30.0;
 
-
   int touchedIndex = -1;
+
+  String selectedCurrency = "";
 
   String selectedTimeFilter = "day";
 
@@ -80,8 +82,14 @@ class _HomeBodyState extends State<HomeBody> {
                 Row(
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        print('exchange pressed');
+                      onTap: () async {
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Currency()),
+                        );
+                        setState(() {
+                          selectedCurrency = result;
+                        });
                       },
                       child: Image.asset(
                         'assets/icons/exchange.png',
@@ -132,7 +140,7 @@ class _HomeBodyState extends State<HomeBody> {
               height: 10,
             ),
             Text(
-              "Recent earnings",
+              selectedCurrency,
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
             ),
             SizedBox(
@@ -468,7 +476,7 @@ class _HomeBodyState extends State<HomeBody> {
             Wrap(
               children: [
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -755,14 +763,16 @@ class _HomeBodyState extends State<HomeBody> {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       setState(() {
                         selectedTimeFilter = "day";
                       });
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: selectedTimeFilter == "day" ? Colors.green : Colors.transparent,
+                        color: selectedTimeFilter == "day"
+                            ? Colors.green
+                            : Colors.transparent,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: Color(0xffEBEFF3),
@@ -773,18 +783,19 @@ class _HomeBodyState extends State<HomeBody> {
                       height: 40,
                       child: Center(
                           child: Text(
-                            "A day",
-                            style: TextStyle(color: selectedTimeFilter == "day" ?  Colors.white : Colors.grey[500]),
-                          )),
+                        "A day",
+                        style: TextStyle(
+                            color: selectedTimeFilter == "day"
+                                ? Colors.white
+                                : Colors.grey[500]),
+                      )),
                     ),
                   ),
-
-
                   SizedBox(
                     width: 10,
                   ),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       setState(() {
                         setState(() {
                           selectedTimeFilter = "week";
@@ -793,7 +804,9 @@ class _HomeBodyState extends State<HomeBody> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: selectedTimeFilter == "week" ? Colors.green : Colors.transparent,
+                        color: selectedTimeFilter == "week"
+                            ? Colors.green
+                            : Colors.transparent,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: Color(0xffEBEFF3),
@@ -804,16 +817,19 @@ class _HomeBodyState extends State<HomeBody> {
                       height: 40,
                       child: Center(
                           child: Text(
-                            "A week",
-                            style: TextStyle(color:  selectedTimeFilter == "week" ?  Colors.white : Colors.grey[500]),
-                          )),
+                        "A week",
+                        style: TextStyle(
+                            color: selectedTimeFilter == "week"
+                                ? Colors.white
+                                : Colors.grey[500]),
+                      )),
                     ),
                   ),
                   SizedBox(
                     width: 10,
                   ),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       setState(() {
                         setState(() {
                           selectedTimeFilter = "month";
@@ -822,7 +838,9 @@ class _HomeBodyState extends State<HomeBody> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: selectedTimeFilter == "month" ? Colors.green : Colors.transparent,
+                        color: selectedTimeFilter == "month"
+                            ? Colors.green
+                            : Colors.transparent,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: Color(0xffEBEFF3),
@@ -833,16 +851,19 @@ class _HomeBodyState extends State<HomeBody> {
                       height: 40,
                       child: Center(
                           child: Text(
-                            "A month",
-                            style: TextStyle(color: selectedTimeFilter == "month" ?  Colors.white : Colors.grey[500]),
-                          )),
+                        "A month",
+                        style: TextStyle(
+                            color: selectedTimeFilter == "month"
+                                ? Colors.white
+                                : Colors.grey[500]),
+                      )),
                     ),
                   ),
                   SizedBox(
                     width: 10,
                   ),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       setState(() {
                         setState(() {
                           selectedTimeFilter = "year";
@@ -851,7 +872,9 @@ class _HomeBodyState extends State<HomeBody> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: selectedTimeFilter == "year" ? Colors.green : Colors.transparent,
+                        color: selectedTimeFilter == "year"
+                            ? Colors.green
+                            : Colors.transparent,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: Color(0xffEBEFF3),
@@ -862,9 +885,12 @@ class _HomeBodyState extends State<HomeBody> {
                       height: 40,
                       child: Center(
                           child: Text(
-                            "A year",
-                            style: TextStyle(color: selectedTimeFilter == "year" ?  Colors.white : Colors.grey[500]),
-                          )),
+                        "A year",
+                        style: TextStyle(
+                            color: selectedTimeFilter == "year"
+                                ? Colors.white
+                                : Colors.grey[500]),
+                      )),
                     ),
                   ),
                   SizedBox(
@@ -914,7 +940,6 @@ class _HomeBodyState extends State<HomeBody> {
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
                   ))),
             ]),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -930,7 +955,10 @@ class _HomeBodyState extends State<HomeBody> {
                         ),
                       ),
                     ),
-                    Text(" Taxes",style: TextStyle(fontSize: 18),),
+                    Text(
+                      " Taxes",
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ],
                 ),
                 Row(
@@ -945,7 +973,10 @@ class _HomeBodyState extends State<HomeBody> {
                         ),
                       ),
                     ),
-                    Text(" Gift",style: TextStyle(fontSize: 18),),
+                    Text(
+                      " Gift",
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ],
                 ),
                 Row(
@@ -960,7 +991,10 @@ class _HomeBodyState extends State<HomeBody> {
                         ),
                       ),
                     ),
-                    Text(" Eat",style: TextStyle(fontSize: 18),),
+                    Text(
+                      " Eat",
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ],
                 ),
                 Row(
@@ -975,14 +1009,17 @@ class _HomeBodyState extends State<HomeBody> {
                         ),
                       ),
                     ),
-                    Text(" Other",style: TextStyle(fontSize: 18),),
+                    Text(
+                      " Other",
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ],
                 ),
               ],
             ),
-
-            SizedBox(height: 20,),
-
+            SizedBox(
+              height: 20,
+            ),
             Center(
               child: Text(
                 'Privacy policy',
@@ -990,20 +1027,12 @@ class _HomeBodyState extends State<HomeBody> {
                     color: Color(0xff41B746),
                     decoration: TextDecoration.underline,
                     decorationColor: Color(0xff41B746),
-                    fontSize: 20
-                ),
-
+                    fontSize: 20),
               ),
             ),
-
-
-
-
-
           ],
         ),
       ),
-
     );
   }
 
