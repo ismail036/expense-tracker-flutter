@@ -1,7 +1,12 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fl_chart/fl_chart.dart';
+
+import 'expense.dart';
+import 'home.dart';
 
 class Category extends StatelessWidget {
   const Category({super.key});
@@ -10,7 +15,7 @@ class Category extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CategoryBody(),
-
+      
     );
   }
 }
@@ -23,8 +28,29 @@ class CategoryBody extends StatefulWidget {
 }
 
 class _CategoryBodyState extends State<CategoryBody> {
+
+  List<Expense> expenseList = [];
+
+  
+  
+  Expense expense = Expense("clothes", "Nike", DateTime.now()   , 125.23);
+  Expense expense2= Expense("shop", "Zara", DateTime.now().subtract(Duration(hours: 2))       , 111.23);
+  Expense expense3 = Expense("eat", "KFC", DateTime.now().subtract(Duration(hours: 3))        , 22.23);
+  Expense expense4 = Expense("clothes", "Abibas", DateTime.now().subtract(Duration(hours: 4)) , 65.23);
+  Expense expense5 = Expense("eat", "PizzaHut", DateTime.now().subtract(Duration(hours: 5))   , 9.23);
+
+
+
+  
+  
   @override
   Widget build(BuildContext context) {
+    expenseList.add(expense);
+    expenseList.add(expense2);
+    expenseList.add(expense3);
+    expenseList.add(expense4);
+    expenseList.add(expense5);
+
     return Container(
       child: Stack(
         children: [
@@ -40,10 +66,18 @@ class _CategoryBodyState extends State<CategoryBody> {
                   mainAxisAlignment:MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                        onTap: () {
-                          print('back pressed');
-                        },
-                           child: Icon(Icons.arrow_back_ios_new_rounded,color: Colors.white,)
+                      onTap: () {
+                        print("Container tapped");
+                      },
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        color: Colors.red,
+                        child: Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                     Text("Shops",style: TextStyle(color: Colors.white,fontSize: 22),),
                     Row(
@@ -257,7 +291,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                           )
                         ],
                       ),
-                      
+
                     ],
                   ),
                 )
@@ -280,6 +314,7 @@ class _CategoryBodyState extends State<CategoryBody> {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(height: 30,),
                   Row(
@@ -320,7 +355,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Image.asset(
-                                  "assets/icons/salary.png",
+                                  "assets/icons/${expenseList[i].category}.png",
                                   width: 40,
                                 ),
                               ),
@@ -329,16 +364,71 @@ class _CategoryBodyState extends State<CategoryBody> {
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Salary"),
+                                  Text("${expenseList[i].expenseName}"),
                                   Text(
-                                      '${DateTime.now().hour-i}:${DateTime.now().minute}')
+                                      '${expenseList[i].expenseDate.hour}:${expenseList[i].expenseDate.minute}')
                                 ],
                               )
                             ],
                           ),
                           Text(
-                            "\$12.23",
+                            "\$${expenseList[i].expense}",
+                            style: TextStyle(fontSize: 25),
+                          )
+                        ],
+                      ),
+                    ),
+
+
+                  SizedBox(height: 15,),
+
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("EXPENSES YESTERDAY"),
+                    ],
+                  ),
+
+                  SizedBox(height: 5,),
+
+                  for(int i = 0 ; i<5;i++)
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Image.asset(
+                                  "assets/icons/${expenseList[i].category}.png",
+                                  width: 40,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 6,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${expenseList[i].expenseName}"),
+                                  Text(
+                                      '${expenseList[i].expenseDate.hour}:${expenseList[i].expenseDate.minute}')
+                                ],
+                              )
+                            ],
+                          ),
+                          Text(
+                            "\$${expenseList[i].expense}",
                             style: TextStyle(fontSize: 25),
                           )
                         ],
