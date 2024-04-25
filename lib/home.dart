@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:live_currency_rate/live_currency_rate.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:unilive/addcategory.dart';
 import 'package:unilive/addearnings.dart';
@@ -42,7 +43,6 @@ List<Map<String, dynamic>> expenseData = [];
 List<Map<String, dynamic>> firstfiveearningData = [];
 
 class _HomeBodyState extends State<HomeBody> {
-
   double appBarIconWidth = 30.0;
 
   int touchedIndex = -1;
@@ -76,9 +76,8 @@ class _HomeBodyState extends State<HomeBody> {
     ChartData(2014, 40),
   ];
 
-  double totalEarning    = 0.0;
-  double thisDayEarning  = 0.0;
-
+  double totalEarning = 0.0;
+  double thisDayEarning = 0.0;
 
   Future<void> getEarning() async {
     DbHelper dbHelper = DbHelper();
@@ -87,10 +86,10 @@ class _HomeBodyState extends State<HomeBody> {
     earningData.clear();
     expenseData.clear();
 
-    for(var d in data){
-      if(d["category"] == "salary"){
+    for (var d in data) {
+      if (d["category"] == "salary") {
         earningData.add(d);
-      }else{
+      } else {
         expenseData.add(d);
       }
     }
@@ -98,38 +97,28 @@ class _HomeBodyState extends State<HomeBody> {
     earningData = earningData.reversed.toList();
 
     if (earningData.length > 5) {
-         firstfiveearningData = earningData.sublist(0, 5);
+      firstfiveearningData = earningData.sublist(0, 5);
     }
     await setTotalEarning(); // setTotalEarning işlevini beklet
   }
 
-
-
-
   Future<void> setTotalEarning() async {
     double total = 0.0;
     double thisDay = 0.0;
-    for(var earning in earningData){
-        total += earning["expense"];
-        if( DateTime.parse(earning["expenseDate"]).day == DateTime.now().day ){
-          thisDay += earning["expense"];
-        }
+    for (var earning in earningData) {
+      total += earning["expense"];
+      if (DateTime.parse(earning["expenseDate"]).day == DateTime.now().day) {
+        thisDay += earning["expense"];
+      }
     }
-
 
     setState(() {
       totalEarning = total;
       thisDayEarning = thisDay;
     });
-
-
   }
 
-
   var format = NumberFormat("#,##0.00", "tr_TR");
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +148,7 @@ class _HomeBodyState extends State<HomeBody> {
                             selectedCurrency = result;
                             print(selectedCurrency);
                           } else {
-                            print("no");
+                            print("NO CHOOSE");
                           }
                         });
                       },
@@ -237,7 +226,9 @@ class _HomeBodyState extends State<HomeBody> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: 16,),
+                  SizedBox(
+                    width: 16,
+                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,7 +269,7 @@ class _HomeBodyState extends State<HomeBody> {
             SizedBox(
               height: 10,
             ),
-            for (var i = 0; i < firstfiveearningData.length ; i++)
+            for (var i = 0; i < firstfiveearningData.length; i++)
               Container(
                 padding: EdgeInsets.symmetric(vertical: 5),
                 child: Row(
@@ -310,10 +301,8 @@ class _HomeBodyState extends State<HomeBody> {
                         )
                       ],
                     ),
-                    Text(
-                      "${earningData[i]["expense"]}",
-                       style: TextStyle(fontSize: 25)
-                    )
+                    Text("${earningData[i]["expense"]}",
+                        style: TextStyle(fontSize: 25))
                   ],
                 ),
               ),
@@ -1191,4 +1180,11 @@ class ChartData {
   ChartData(this.x, this.y);
   final int x;
   final double? y;
+}
+
+Future<double> exchangeCurrency(
+    String first, String second, double amount) async {
+  CurrencyRate rate =
+      await LiveCurrencyRate.convertCurrency(first, second, amount);
+  return rate.result;
 }
