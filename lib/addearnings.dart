@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:unilive/db_helper.dart';
+
+import 'home.dart';
 
 const int DF_CLR = 0XFF07873A;
 const double SPC_BTW = 15.0;
@@ -161,6 +164,7 @@ class _MyBodyState extends State<MyBody> {
                 ),
               ),
               onPressed: () {
+                addEarning();
                 print("Name : $incomeValue Value : $incomeamountValue");
               },
               child: Text(
@@ -172,5 +176,19 @@ class _MyBodyState extends State<MyBody> {
         ]),
       ],
     );
+  }
+
+  Future<void> addEarning() async {
+    DbHelper dbHelper = DbHelper();
+    await dbHelper.open();
+    await dbHelper.addData("salary", incomeValue, DateTime.now().toString(), double.parse(incomeamountValue));
+    List<Map<String, dynamic>> data = await dbHelper.getData();
+    print(data);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Home(),
+        ));
+
   }
 }

@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_print
 
+import 'dart:ffi';
+import 'package:intl/intl.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -12,6 +15,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:unilive/currency.dart';
 
 import 'category.dart';
+import 'db_helper.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -31,7 +35,14 @@ class HomeBody extends StatefulWidget {
   State<HomeBody> createState() => _HomeBodyState();
 }
 
+List<Map<String, dynamic>> data = [];
+List<Map<String, dynamic>> earningData = [];
+List<Map<String, dynamic>> expenseData = [];
+
+List<Map<String, dynamic>> firstfiveearningData = [];
+
 class _HomeBodyState extends State<HomeBody> {
+
   double appBarIconWidth = 30.0;
 
   int touchedIndex = -1;
@@ -65,8 +76,62 @@ class _HomeBodyState extends State<HomeBody> {
     ChartData(2014, 40),
   ];
 
+  double totalEarning    = 0.0;
+  double thisDayEarning  = 0.0;
+
+
+  Future<void> getEarning() async {
+    DbHelper dbHelper = DbHelper();
+    await dbHelper.open();
+    data = await dbHelper.getData();
+
+    for(var d in data){
+      if(d["category"] == "salary"){
+        earningData.add(d);
+      }
+    }
+
+    earningData = earningData.reversed.toList();
+
+    if (earningData.length > 5) {
+         firstfiveearningData = earningData.sublist(0, 5);
+    }
+    await setTotalEarning(); // setTotalEarning işlevini beklet
+  }
+
+
+
+
+  Future<void> setTotalEarning() async {
+    double total = 0.0;
+    double thisDay = 0.0;
+    for(var earning in earningData){
+        total += earning["expense"];
+        if( DateTime.parse(earning["expenseDate"]).day == DateTime.now().day ){
+          thisDay += earning["expense"];
+        }
+    }
+
+
+    setState(() {
+      totalEarning = total;
+      thisDayEarning = thisDay;
+    });
+
+
+  }
+
+
+  var format = NumberFormat("#,##0.00", "tr_TR");
+
+
+
+
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      getEarning();
+    });
     return Container(
       padding: EdgeInsets.all(16),
       child: SingleChildScrollView(
@@ -168,8 +233,9 @@ class _HomeBodyState extends State<HomeBody> {
                 ),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  SizedBox(width: 16,),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,14 +248,14 @@ class _HomeBodyState extends State<HomeBody> {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        "\$5.000",
+                        "\$${format.format(totalEarning)}",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 30,
                             fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        "\$435 this day",
+                        "\$${format.format(thisDayEarning)}",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -197,32 +263,6 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ],
                   ),
-                  Container(
-                    width: 200,
-                    child: SfCartesianChart(
-                      plotAreaBorderColor: Colors
-                          .transparent, // Arka planın kenar çizgisini saydam yapar
-                      plotAreaBackgroundColor:
-                          Colors.transparent, // Arka plan rengini saydam yapar
-                      primaryXAxis: NumericAxis(
-                        isVisible: true, // X ekseni görünür
-                        majorGridLines: MajorGridLines(
-                            width: 0), // X ekseni çizgisini gizler
-                      ),
-                      primaryYAxis: NumericAxis(
-                          isVisible: false), // Y ekseni çizgisini gizler
-                      series: <CartesianSeries>[
-                        // Spline grafik serisi
-                        SplineSeries<ChartData, int>(
-                          dataSource: chartData,
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y,
-                          splineType: SplineType
-                              .natural, // Spline çizgisi sonunda yuvarlak bir bitiş ekler
-                        ),
-                      ],
-                    ),
-                  )
                 ],
               ),
             ),
@@ -236,7 +276,7 @@ class _HomeBodyState extends State<HomeBody> {
             SizedBox(
               height: 10,
             ),
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < firstfiveearningData.length ; i++)
               Container(
                 padding: EdgeInsets.symmetric(vertical: 5),
                 child: Row(
@@ -261,16 +301,16 @@ class _HomeBodyState extends State<HomeBody> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Salary"),
+                            Text(earningData[i]["expenseName"]),
                             Text(
-                                '${DateTime.now().hour}:${DateTime.now().minute}')
+                                '${DateTime.parse(earningData[i]["expenseDate"]).hour}:${DateTime.parse(earningData[i]["expenseDate"]).minute}')
                           ],
                         )
                       ],
                     ),
                     Text(
-                      "\$12.23",
-                      style: TextStyle(fontSize: 25),
+                      "${earningData[i]["expense"]}",
+                       style: TextStyle(fontSize: 25)
                     )
                   ],
                 ),
@@ -342,7 +382,7 @@ class _HomeBodyState extends State<HomeBody> {
                             fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        "\$435 this day",
+                        "${thisDayEarning}",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
