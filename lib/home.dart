@@ -88,7 +88,12 @@ class _HomeBodyState extends State<HomeBody> {
                           MaterialPageRoute(builder: (context) => Currency()),
                         );
                         setState(() {
-                          selectedCurrency = result;
+                          if (result != null) {
+                            selectedCurrency = result;
+                            print(selectedCurrency);
+                          } else {
+                            print("no");
+                          }
                         });
                       },
                       child: Image.asset(
