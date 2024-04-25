@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:unilive/addcategory.dart';
 import 'package:unilive/addearnings.dart';
 import 'package:unilive/addexpenses.dart';
+import 'package:unilive/currency.dart';
 import 'package:unilive/home.dart';
 
 void main() {
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const Home(),
+        home: const Currency(),
       ),
     );
   }
