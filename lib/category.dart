@@ -13,19 +13,22 @@ import 'expense.dart';
 import 'home.dart';
 
 class Category extends StatelessWidget {
-  const Category({super.key});
+  final String categoryName;
+
+  const Category({super.key, required this.categoryName});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CategoryBody(),
+      body: CategoryBody(categoryName: categoryName),
     );
   }
 }
 
 class CategoryBody extends StatefulWidget {
-  const CategoryBody({super.key});
+  final String categoryName;
 
+  const CategoryBody({super.key, required this.categoryName});
   @override
   State<CategoryBody> createState() => _CategoryBodyState();
 }
@@ -75,7 +78,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                   ),
                 ),
                 Text(
-                  "Shops",
+                  widget.categoryName,
                   style: TextStyle(color: Colors.white, fontSize: 22),
                 ),
                 Row(

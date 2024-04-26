@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_print, duplicate_import, depend_on_referenced_packages, unused_import, unnecessary_brace_in_string_interps
 
 import 'dart:ffi';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
@@ -506,7 +507,8 @@ class _HomeBodyState extends State<HomeBody> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Category(),
+                        builder: (context) =>
+                            Category(categoryName: context.translate.shop),
                       ),
                     );
                   },
@@ -541,33 +543,45 @@ class _HomeBodyState extends State<HomeBody> {
                     ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffEBEFF3),
-                      width: 2,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            Category(categoryName: context.translate.car),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(4),
+                    width: MediaQuery.of(context).size.width / 3.5,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xffEBEFF3),
+                        width: 2,
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/icons/car.png",
-                        scale: 7,
-                      ),
-                      Text(context.translate.car, textAlign: TextAlign.center),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "\$855",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w500),
-                      )
-                    ],
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/icons/car.png",
+                          scale: 7,
+                        ),
+                        Text(context.translate.car,
+                            textAlign: TextAlign.center),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "\$855",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Container(
