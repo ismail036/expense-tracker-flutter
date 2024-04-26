@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_print, duplicate_import, depend_on_referenced_packages, unused_import, unnecessary_brace_in_string_interps
 
 import 'dart:ffi';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
@@ -979,82 +980,85 @@ class _HomeBodyState extends State<HomeBody> {
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
                   ))),
             ]),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 40,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.blue,
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 40,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.blue,
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      " ${context.translate.taxes}",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 40,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.green,
+                      Text(
+                        " ${context.translate.taxes}",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 40,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.green,
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      " ${context.translate.gifts}",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 40,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.red,
+                      Text(
+                        " ${context.translate.gifts}",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 40,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.red,
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      " ${context.translate.eat}",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 40,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.grey,
+                      Text(
+                        " ${context.translate.eat}",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 40,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      " ${context.translate.other}",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
-                ),
-              ],
+                      Text(
+                        " ${context.translate.other}",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: 20,
