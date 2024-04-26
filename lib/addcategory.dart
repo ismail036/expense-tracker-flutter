@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:unilive/core/extensions/l10n.extensions.dart';
 import 'package:unilive/iconwidget.dart';
 
 const int DF_CLR = 0XFF07873A;
@@ -57,7 +58,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0, // gölgeyi kaldırır
       centerTitle: true,
       title: Text(
-        "Add new category",
+        context.translate.aaddnewcategory,
         style: TextStyle(color: Colors.black),
       ),
       leading: IconButton(
@@ -96,7 +97,7 @@ class _MyBodyState extends State<MyBody> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Name of category",
+                    context.translate.namecategory,
                     style: TextStyle(fontSize: 15),
                   ),
                   SizedBox(height: 20),
@@ -111,7 +112,7 @@ class _MyBodyState extends State<MyBody> {
                   ),
                   SizedBox(height: 15),
                   Text(
-                    "Select the icon category",
+                    context.translate.selecticoncategory,
                     style: TextStyle(fontSize: 15),
                   ),
                   SizedBox(height: 25),
@@ -150,7 +151,7 @@ class _MyBodyState extends State<MyBody> {
                 Navigator.of(context).pop();
               },
               child: Text(
-                'Cancel',
+                context.translate.cancel,
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -171,7 +172,7 @@ class _MyBodyState extends State<MyBody> {
                 print("Selected : ${categoryMap[selectedImage]}");
               },
               child: Text(
-                'Save',
+                context.translate.save,
                 style: TextStyle(color: Color(DF_CLR)),
               ),
             ),

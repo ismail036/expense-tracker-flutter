@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, unused_import, unnecessary_import
+
 import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:unilive/core/extensions/l10n.extensions.dart';
 
 import 'expense.dart';
 import 'home.dart';
@@ -90,7 +93,6 @@ class _CategoryBodyState extends State<CategoryBody> {
               ],
             ),
           ),
-
           Container(
             height: MediaQuery.of(context).size.height - 80,
             child: Stack(
@@ -107,7 +109,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                         height: 8,
                       ),
                       Text(
-                        "TOTAL EXPENSES",
+                        context.translate.totalexpenses,
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                       SizedBox(
@@ -124,7 +126,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "EXPENSES FOR THIS WEEK",
+                            context.translate.expensesforthisweek,
                             style: TextStyle(color: Colors.white, fontSize: 13),
                           ),
                           Text(
@@ -402,11 +404,11 @@ class _CategoryBodyState extends State<CategoryBody> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("EXPENSES TODAY"),
+                            Text(context.translate.expensestoday),
                             GestureDetector(
                               onTap: () {},
                               child: Text(
-                                '+ add expense',
+                                '+ ${context.translate.addexpense}',
                                 style: TextStyle(
                                     color: Color(0xff41B746),
                                     decoration: TextDecoration.underline,
@@ -464,7 +466,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("EXPENSES YESTERDAY"),
+                            Text(context.translate.expensesyesterday),
                           ],
                         ),
                         SizedBox(

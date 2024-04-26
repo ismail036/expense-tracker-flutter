@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:unilive/core/extensions/l10n.extensions.dart';
 import 'package:unilive/db_helper.dart';
 
 import 'home.dart';
@@ -43,7 +44,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0, // gölgeyi kaldırır
       centerTitle: true,
       title: Text(
-        "Add earnings",
+        context.translate.aaddearnings,
         style: TextStyle(color: Colors.black),
       ),
       leading: IconButton(
@@ -80,7 +81,7 @@ class _MyBodyState extends State<MyBody> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Enter the name of the income",
+                    context.translate.enterthenameincome,
                     style: TextStyle(fontSize: 15),
                   ),
                   SizedBox(height: 20),
@@ -98,7 +99,7 @@ class _MyBodyState extends State<MyBody> {
                   ),
                   SizedBox(height: 15),
                   Text(
-                    "Enter the amount of income",
+                    context.translate.entertheamountincome,
                     style: TextStyle(fontSize: 15),
                   ),
                   SizedBox(height: 25),
@@ -146,7 +147,7 @@ class _MyBodyState extends State<MyBody> {
                 Navigator.of(context).pop();
               },
               child: Text(
-                'Cancel',
+                context.translate.cancel,
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -168,7 +169,7 @@ class _MyBodyState extends State<MyBody> {
                 print("Name : $incomeValue Value : $incomeamountValue");
               },
               child: Text(
-                'Save',
+                context.translate.save,
                 style: TextStyle(color: Color(DF_CLR)),
               ),
             ),
@@ -181,7 +182,8 @@ class _MyBodyState extends State<MyBody> {
   Future<void> addEarning() async {
     DbHelper dbHelper = DbHelper();
     await dbHelper.open();
-    await dbHelper.addData("salary", incomeValue, DateTime.now().toString(), double.parse(incomeamountValue));
+    await dbHelper.addData("salary", incomeValue, DateTime.now().toString(),
+        double.parse(incomeamountValue));
     List<Map<String, dynamic>> data = await dbHelper.getData();
     print(data);
     Navigator.push(
@@ -189,6 +191,5 @@ class _MyBodyState extends State<MyBody> {
         MaterialPageRoute(
           builder: (context) => Home(),
         ));
-
   }
 }

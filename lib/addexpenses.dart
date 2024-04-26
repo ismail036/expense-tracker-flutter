@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, unnecessary_null_comparison, prefer_const_literals_to_create_immutables, constant_identifier_names, unnecessary_import
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, unnecessary_null_comparison, prefer_const_literals_to_create_immutables, constant_identifier_names, unnecessary_import, unused_import
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:unilive/categorywidget.dart';
+import 'package:unilive/core/extensions/l10n.extensions.dart';
 
 import 'db_helper.dart';
 import 'home.dart';
@@ -64,7 +65,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       surfaceTintColor: Colors.white,
       centerTitle: true,
       title: Text(
-        "Add expenses",
+        context.translate.addexpenses,
         style: TextStyle(color: Colors.black),
       ),
       leading: IconButton(
@@ -103,7 +104,7 @@ class _MyBodyState extends State<MyBody> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Enter the name of the expense",
+                    context.translate.enternameexpense,
                     style: TextStyle(fontSize: 15),
                   ),
                   SizedBox(height: 20),
@@ -121,7 +122,7 @@ class _MyBodyState extends State<MyBody> {
                   ),
                   SizedBox(height: 15),
                   Text(
-                    "Select an expense category",
+                    context.translate.selectexpense,
                     style: TextStyle(fontSize: 15),
                   ),
                   SizedBox(height: 15),
@@ -134,7 +135,7 @@ class _MyBodyState extends State<MyBody> {
                   ),
                   SizedBox(height: 15),
                   Text(
-                    "Enter the amount of expense",
+                    context.translate.enteramountexpense,
                     style: TextStyle(fontSize: 15),
                   ),
                   SizedBox(height: 25),
@@ -182,7 +183,7 @@ class _MyBodyState extends State<MyBody> {
                 Navigator.of(context).pop();
               },
               child: Text(
-                'Cancel',
+                context.translate.cancel,
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -204,7 +205,7 @@ class _MyBodyState extends State<MyBody> {
                     "Name : $expenseValue Value : $expenseamountValue Choose : ${categoryMap[selectedImage]}");
               },
               child: Text(
-                'Save',
+                context.translate.save,
                 style: TextStyle(color: Color(DF_CLR)),
               ),
             ),

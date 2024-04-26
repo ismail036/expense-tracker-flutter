@@ -1,18 +1,18 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_print
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_print, duplicate_import, depend_on_referenced_packages, unused_import
 
 import 'dart:ffi';
 import 'package:intl/intl.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:live_currency_rate/live_currency_rate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:unilive/addcategory.dart';
 import 'package:unilive/addearnings.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:unilive/addexpenses.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:unilive/core/extensions/l10n.extensions.dart';
 import 'package:unilive/currency.dart';
 
 import 'category.dart';
@@ -163,6 +163,7 @@ class _HomeBodyState extends State<HomeBody> {
                     GestureDetector(
                       onTap: () {
                         print('american pressed');
+                        _saveCurrency("en");
                       },
                       child: Image.asset(
                         'assets/icons/american.png',
@@ -175,6 +176,7 @@ class _HomeBodyState extends State<HomeBody> {
                     GestureDetector(
                       onTap: () {
                         print('russian pressed');
+                        _saveCurrency("ru");
                       },
                       child: Image.asset(
                         'assets/icons/russian.png',
@@ -187,6 +189,7 @@ class _HomeBodyState extends State<HomeBody> {
                     GestureDetector(
                       onTap: () {
                         print('brazilian pressed');
+                        _saveCurrency("hu");
                       },
                       child: Image.asset(
                         'assets/icons/brazilian.png',
@@ -201,7 +204,7 @@ class _HomeBodyState extends State<HomeBody> {
               height: 10,
             ),
             Text(
-              "Recent earnings",
+              context.translate.recentearnings,
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
             ),
             SizedBox(
@@ -234,7 +237,7 @@ class _HomeBodyState extends State<HomeBody> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Earnings",
+                        context.translate.earnings,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 17,
@@ -263,7 +266,7 @@ class _HomeBodyState extends State<HomeBody> {
               height: 10,
             ),
             Text(
-              'Today ,  ${abbreviatedMonths[currentMonth - 1]} ${DateTime.now().day}',
+              '${context.translate.today} ,  ${abbreviatedMonths[currentMonth - 1]} ${DateTime.now().day}',
               style: TextStyle(color: Colors.grey, fontSize: 16),
             ),
             SizedBox(
@@ -318,7 +321,7 @@ class _HomeBodyState extends State<HomeBody> {
                     ));
               },
               child: Text(
-                '+ add earnings',
+                '+ ${context.translate.addearnings}',
                 style: TextStyle(
                     color: Color(0xff41B746),
                     decoration: TextDecoration.underline,
@@ -329,7 +332,7 @@ class _HomeBodyState extends State<HomeBody> {
               height: 20,
             ),
             Text(
-              "Recent expenses",
+              context.translate.recentexpenses,
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
             ),
             SizedBox(
@@ -359,7 +362,7 @@ class _HomeBodyState extends State<HomeBody> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Earnings",
+                        context.translate.expenses,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 17,
@@ -414,7 +417,7 @@ class _HomeBodyState extends State<HomeBody> {
               height: 10,
             ),
             Text(
-              'Today ,  ${abbreviatedMonths[currentMonth - 1]} ${DateTime.now().day}',
+              '${context.translate.today} ,  ${abbreviatedMonths[currentMonth - 1]} ${DateTime.now().day}',
               style: TextStyle(color: Colors.grey, fontSize: 16),
             ),
             SizedBox(
@@ -471,7 +474,7 @@ class _HomeBodyState extends State<HomeBody> {
                     ));
               },
               child: Text(
-                '+ add expense',
+                '+ ${context.translate.addexpense}',
                 style: TextStyle(
                     color: Color(0xff41B746),
                     decoration: TextDecoration.underline,
@@ -481,13 +484,13 @@ class _HomeBodyState extends State<HomeBody> {
             SizedBox(
               height: 20,
             ),
-            Text("Expense by category",
+            Text(context.translate.expensesbycategory,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "This month - ${abbreviatedMonths[currentMonth - 1]}",
+                  "${context.translate.thismonth} - ${abbreviatedMonths[currentMonth - 1]}",
                   style: TextStyle(color: Colors.grey[500]),
                 ),
                 GestureDetector(
@@ -500,7 +503,7 @@ class _HomeBodyState extends State<HomeBody> {
                     );
                   },
                   child: Text(
-                    '+ add new category',
+                    '+ ${context.translate.addnewcategory}',
                     style: TextStyle(
                         color: Color(0xff41B746),
                         decoration: TextDecoration.underline,
@@ -788,7 +791,7 @@ class _HomeBodyState extends State<HomeBody> {
               height: 10,
             ),
             Text(
-              "Exenses statistics",
+              context.translate.expensestatistics,
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(
@@ -819,7 +822,7 @@ class _HomeBodyState extends State<HomeBody> {
                       height: 40,
                       child: Center(
                           child: Text(
-                        "A day",
+                        context.translate.aday,
                         style: TextStyle(
                             color: selectedTimeFilter == "day"
                                 ? Colors.white
@@ -853,7 +856,7 @@ class _HomeBodyState extends State<HomeBody> {
                       height: 40,
                       child: Center(
                           child: Text(
-                        "A week",
+                        context.translate.aweek,
                         style: TextStyle(
                             color: selectedTimeFilter == "week"
                                 ? Colors.white
@@ -887,7 +890,7 @@ class _HomeBodyState extends State<HomeBody> {
                       height: 40,
                       child: Center(
                           child: Text(
-                        "A month",
+                        context.translate.amonth,
                         style: TextStyle(
                             color: selectedTimeFilter == "month"
                                 ? Colors.white
@@ -921,7 +924,7 @@ class _HomeBodyState extends State<HomeBody> {
                       height: 40,
                       child: Center(
                           child: Text(
-                        "A year",
+                        context.translate.ayear,
                         style: TextStyle(
                             color: selectedTimeFilter == "year"
                                 ? Colors.white
@@ -992,7 +995,7 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ),
                     Text(
-                      " Taxes",
+                      " ${context.translate.taxes}",
                       style: TextStyle(fontSize: 18),
                     ),
                   ],
@@ -1010,7 +1013,7 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ),
                     Text(
-                      " Gift",
+                      " ${context.translate.gifts}",
                       style: TextStyle(fontSize: 18),
                     ),
                   ],
@@ -1028,7 +1031,7 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ),
                     Text(
-                      " Eat",
+                      " ${context.translate.eat}",
                       style: TextStyle(fontSize: 18),
                     ),
                   ],
@@ -1046,7 +1049,7 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ),
                     Text(
-                      " Other",
+                      " ${context.translate.other}",
                       style: TextStyle(fontSize: 18),
                     ),
                   ],
@@ -1058,7 +1061,7 @@ class _HomeBodyState extends State<HomeBody> {
             ),
             Center(
               child: Text(
-                'Privacy policy',
+                context.translate.privacy,
                 style: TextStyle(
                     color: Color(0xff41B746),
                     decoration: TextDecoration.underline,
@@ -1080,19 +1083,19 @@ class _HomeBodyState extends State<HomeBody> {
       color: Colors.green,
     );
     if (hour >= 6 && hour < 12) {
-      greetingText = "Good Morning";
+      greetingText = context.translate.gmorning;
       icon = Icon(
         Icons.sunny_snowing,
         color: Colors.green,
       );
     } else if (hour >= 12 && hour < 18) {
-      greetingText = "Good Day";
+      greetingText = context.translate.gday;
       icon = Icon(
         Icons.sunny,
         color: Colors.green,
       );
     } else {
-      greetingText = "Good Night";
+      greetingText = context.translate.gnight;
       icon = Icon(
         Icons.nights_stay,
         color: Colors.green,
@@ -1173,6 +1176,11 @@ class _HomeBodyState extends State<HomeBody> {
           throw Error();
       }
     });
+  }
+
+  _saveCurrency(String language) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('savedLocale', language);
   }
 }
 

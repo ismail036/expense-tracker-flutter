@@ -88,7 +88,7 @@ class _MyBodyState extends State<MyBody> {
           onTap: () {
             setState(() {
               selectedItem = currencyCode;
-              selectedItemCode = currencyName!;
+              selectedItemCode = currencyName;
             });
             _saveCurrency(currencyName, currencyCode);
           },
