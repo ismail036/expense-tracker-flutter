@@ -981,7 +981,9 @@ class _HomeBodyState extends State<HomeBody> {
                   ))),
             ]),
             SingleChildScrollView(
+
               scrollDirection: Axis.horizontal,
+
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
