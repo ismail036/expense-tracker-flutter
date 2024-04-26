@@ -167,7 +167,9 @@ class _CategoryBodyState extends State<CategoryBody> {
                                       right: 0,
                                       child: Center(
                                         child: Text(
-                                          "MON",
+                                          context.translate.monday
+                                              .toUpperCase()
+                                              .substring(0, 3),
                                           style: TextStyle(
                                               color: Colors.green.shade100),
                                         ),
@@ -200,7 +202,9 @@ class _CategoryBodyState extends State<CategoryBody> {
                                       right: 0,
                                       child: Center(
                                         child: Text(
-                                          "MON",
+                                          context.translate.tuesday
+                                              .toUpperCase()
+                                              .substring(0, 3),
                                           style: TextStyle(
                                               color: Colors.green.shade100),
                                         ),
@@ -233,7 +237,9 @@ class _CategoryBodyState extends State<CategoryBody> {
                                       right: 0,
                                       child: Center(
                                         child: Text(
-                                          "MON",
+                                          context.translate.wednesday
+                                              .toUpperCase()
+                                              .substring(0, 3),
                                           style: TextStyle(
                                               color: Colors.green.shade100),
                                         ),
@@ -266,7 +272,9 @@ class _CategoryBodyState extends State<CategoryBody> {
                                       right: 0,
                                       child: Center(
                                         child: Text(
-                                          "MON",
+                                          context.translate.thursday
+                                              .toUpperCase()
+                                              .substring(0, 3),
                                           style: TextStyle(
                                               color: Colors.green.shade100),
                                         ),
@@ -299,7 +307,9 @@ class _CategoryBodyState extends State<CategoryBody> {
                                       right: 0,
                                       child: Center(
                                         child: Text(
-                                          "MON",
+                                          context.translate.friday
+                                              .toUpperCase()
+                                              .substring(0, 3),
                                           style: TextStyle(
                                               color: Colors.green.shade100),
                                         ),
@@ -332,7 +342,9 @@ class _CategoryBodyState extends State<CategoryBody> {
                                       right: 0,
                                       child: Center(
                                         child: Text(
-                                          "MON",
+                                          context.translate.saturday
+                                              .toUpperCase()
+                                              .substring(0, 3),
                                           style: TextStyle(
                                               color: Colors.green.shade100),
                                         ),
@@ -365,7 +377,9 @@ class _CategoryBodyState extends State<CategoryBody> {
                                       right: 0,
                                       child: Center(
                                         child: Text(
-                                          "MON",
+                                          context.translate.sunday
+                                              .toUpperCase()
+                                              .substring(0, 3),
                                           style: TextStyle(
                                               color: Colors.green.shade100),
                                         ),

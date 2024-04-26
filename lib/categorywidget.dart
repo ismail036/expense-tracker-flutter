@@ -2,24 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:unilive/addexpenses.dart';
-
-Map<String, String> categoryMap = {
-  "Choose a icon": "Select a icon",
-  "assets/icons/car.png": "Car",
-  "assets/icons/clothes.png": "Clothes",
-  "assets/icons/shop.png": "Shop",
-  "assets/icons/eat.png": "Eat",
-  "assets/icons/gifts.png": "Gifts",
-  "assets/icons/education10x.png": "Education",
-  "assets/icons/insurance.png": "Insurance",
-  "assets/icons/childrensproducts.png": "Childrens Products",
-  "assets/icons/taxes.png": "Taxes",
-  "assets/icons/utilities.png": "Utilities",
-  "assets/icons/recreationandentertainment.png": "Recreation and Entertainment",
-  "assets/icons/housing.png": "Housing",
-  "assets/icons/petsupplies.png": "Pet Supplies",
-  "assets/icons/medicine.png": "Medicine",
-};
+import 'package:unilive/core/extensions/l10n.extensions.dart';
 
 class CategorySelectorWidget extends StatefulWidget {
   final ValueChanged<String>? onImageSelected;
@@ -51,6 +34,8 @@ class _CategorySelectorWidgetState extends State<CategorySelectorWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, String> categoryMap = initMap(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: imagePaths.map((path) {
@@ -107,4 +92,25 @@ class _CategorySelectorWidgetState extends State<CategorySelectorWidget> {
       }).toList(),
     );
   }
+}
+
+Map<String, String> initMap(BuildContext context) {
+  return {
+    "Choose a icon": context.translate.selecticon,
+    "assets/icons/car.png": context.translate.car,
+    "assets/icons/clothes.png": context.translate.clothes,
+    "assets/icons/shop.png": context.translate.shop,
+    "assets/icons/eat.png": context.translate.eat,
+    "assets/icons/gifts.png": context.translate.gifts,
+    "assets/icons/education10x.png": context.translate.education,
+    "assets/icons/insurance.png": context.translate.insurance,
+    "assets/icons/childrensproducts.png": context.translate.childrensproducts,
+    "assets/icons/taxes.png": context.translate.taxes,
+    "assets/icons/utilities.png": context.translate.utilities,
+    "assets/icons/recreationandentertainment.png":
+        context.translate.recreationandentertainment,
+    "assets/icons/housing.png": context.translate.housing,
+    "assets/icons/petsupplies.png": context.translate.petsupplies,
+    "assets/icons/medicine.png": context.translate.medicine,
+  };
 }

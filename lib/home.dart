@@ -52,21 +52,6 @@ class _HomeBodyState extends State<HomeBody> {
 
   String selectedTimeFilter = "day";
 
-  List<String> abbreviatedMonths = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ];
-
   int currentMonth = DateTime.now().month;
 
   final List<ChartData> chartData = [
@@ -123,6 +108,7 @@ class _HomeBodyState extends State<HomeBody> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> abbreviatedMonths = initList(context);
     getEarning();
     return Container(
       padding: EdgeInsets.all(16),
@@ -541,7 +527,8 @@ class _HomeBodyState extends State<HomeBody> {
                           "assets/icons/shop.png",
                           scale: 6,
                         ),
-                        Text("Shops"),
+                        Text(context.translate.shop,
+                            textAlign: TextAlign.center),
                         SizedBox(
                           height: 5,
                         ),
@@ -571,7 +558,7 @@ class _HomeBodyState extends State<HomeBody> {
                         "assets/icons/car.png",
                         scale: 7,
                       ),
-                      Text("Shops"),
+                      Text(context.translate.car, textAlign: TextAlign.center),
                       SizedBox(
                         height: 5,
                       ),
@@ -600,7 +587,8 @@ class _HomeBodyState extends State<HomeBody> {
                         "assets/icons/medicine.png",
                         scale: 6,
                       ),
-                      Text("Shops"),
+                      Text(context.translate.medicine,
+                          textAlign: TextAlign.center),
                       SizedBox(
                         height: 5,
                       ),
@@ -629,7 +617,8 @@ class _HomeBodyState extends State<HomeBody> {
                         "assets/icons/clothes.png",
                         scale: 6,
                       ),
-                      Text("Shops"),
+                      Text(context.translate.clothes,
+                          textAlign: TextAlign.center),
                       SizedBox(
                         height: 5,
                       ),
@@ -658,7 +647,8 @@ class _HomeBodyState extends State<HomeBody> {
                         "assets/icons/petsupplies.png",
                         scale: 6,
                       ),
-                      Text("Shops"),
+                      Text(context.translate.petsupplies,
+                          textAlign: TextAlign.center),
                       SizedBox(
                         height: 5,
                       ),
@@ -687,7 +677,8 @@ class _HomeBodyState extends State<HomeBody> {
                         "assets/icons/recreationandentertainment.png",
                         scale: 6,
                       ),
-                      Text("Shops"),
+                      Text(context.translate.recreationandentertainment,
+                          textAlign: TextAlign.center),
                       SizedBox(
                         height: 5,
                       ),
@@ -716,7 +707,8 @@ class _HomeBodyState extends State<HomeBody> {
                         "assets/icons/taxes.png",
                         scale: 6,
                       ),
-                      Text("Shops"),
+                      Text(context.translate.taxes,
+                          textAlign: TextAlign.center),
                       SizedBox(
                         height: 5,
                       ),
@@ -745,7 +737,7 @@ class _HomeBodyState extends State<HomeBody> {
                         "assets/icons/eat.png",
                         scale: 6,
                       ),
-                      Text("Shops"),
+                      Text(context.translate.eat, textAlign: TextAlign.center),
                       SizedBox(
                         height: 5,
                       ),
@@ -774,7 +766,8 @@ class _HomeBodyState extends State<HomeBody> {
                         "assets/icons/gifts.png",
                         scale: 6,
                       ),
-                      Text("Shops"),
+                      Text(context.translate.gifts,
+                          textAlign: TextAlign.center),
                       SizedBox(
                         height: 5,
                       ),
@@ -981,11 +974,9 @@ class _HomeBodyState extends State<HomeBody> {
                   ))),
             ]),
             SingleChildScrollView(
-
               scrollDirection: Axis.horizontal,
-
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(
                     children: [
@@ -1005,6 +996,7 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ],
                   ),
+                  SizedBox(width: 15),
                   Row(
                     children: [
                       Center(
@@ -1023,6 +1015,7 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ],
                   ),
+                  SizedBox(width: 15),
                   Row(
                     children: [
                       Center(
@@ -1041,6 +1034,7 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ],
                   ),
+                  SizedBox(width: 15),
                   Row(
                     children: [
                       Center(
@@ -1201,4 +1195,21 @@ Future<double> exchangeCurrency(
   CurrencyRate rate =
       await LiveCurrencyRate.convertCurrency(first, second, amount);
   return rate.result;
+}
+
+List<String> initList(BuildContext context) {
+  return [
+    context.translate.january.substring(0, 3),
+    context.translate.february.substring(0, 3),
+    context.translate.march.substring(0, 3),
+    context.translate.april.substring(0, 3),
+    context.translate.may.substring(0, 3),
+    context.translate.june.substring(0, 3),
+    context.translate.july.substring(0, 3),
+    context.translate.august.substring(0, 3),
+    context.translate.september.substring(0, 3),
+    context.translate.october.substring(0, 3),
+    context.translate.november.substring(0, 3),
+    context.translate.october.substring(0, 3),
+  ];
 }
