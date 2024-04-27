@@ -43,6 +43,7 @@ List<Map<String, dynamic>> earningData = [];
 List<Map<String, dynamic>> expenseData = [];
 
 List<Map<String, dynamic>> firstfiveearningData = [];
+List<Map<String, dynamic>> firstfiveexpenseData = [];
 
 class _HomeBodyState extends State<HomeBody> {
   double appBarIconWidth = 30.0;
@@ -66,6 +67,9 @@ class _HomeBodyState extends State<HomeBody> {
   double totalEarning = 0.0;
   double thisDayEarning = 0.0;
 
+  double totalExpense = 0.0;
+  double thisDayExpense = 0.0;
+
   Future<void> getEarning() async {
     DbHelper dbHelper = DbHelper();
     await dbHelper.open();
@@ -81,12 +85,28 @@ class _HomeBodyState extends State<HomeBody> {
       }
     }
 
+    print(expenseData);
+
     earningData = earningData.reversed.toList();
 
     if (earningData.length > 5) {
       firstfiveearningData = earningData.sublist(0, 5);
+    }else{
+      firstfiveearningData = earningData;
     }
-    await setTotalEarning(); // setTotalEarning işlevini beklet
+
+    expenseData = expenseData.reversed.toList();
+
+    if (expenseData.length > 5) {
+      firstfiveexpenseData = expenseData.sublist(0, 5);
+    }else{
+      firstfiveexpenseData = expenseData;
+    }
+
+    await setTotalEarning();
+    await setTotalExpense();
+
+
   }
 
   Future<void> setTotalEarning() async {
@@ -105,7 +125,26 @@ class _HomeBodyState extends State<HomeBody> {
     });
   }
 
+  Future<void> setTotalExpense() async {
+    double total = 0.0;
+    double thisDay = 0.0;
+    for (var expense in expenseData) {
+      total += expense["expense"];
+      if (DateTime.parse(expense["expenseDate"]).day == DateTime.now().day) {
+        thisDay += expense["expense"];
+      }
+    }
+
+    setState(() {
+      totalExpense = total;
+      thisDayExpense = thisDay;
+    });
+
+  }
+
+
   var format = NumberFormat("#,##0.00", "tr_TR");
+
 
   @override
   Widget build(BuildContext context) {
@@ -239,7 +278,7 @@ class _HomeBodyState extends State<HomeBody> {
                             fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        "\$${format.format(thisDayEarning)}",
+                        "\$${format.format(thisDayEarning)} ${context.translate.thisday}",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -343,8 +382,9 @@ class _HomeBodyState extends State<HomeBody> {
                 ),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  SizedBox(width: 16,),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -357,14 +397,14 @@ class _HomeBodyState extends State<HomeBody> {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        "\$5.000",
+                        "\$${format.format(totalExpense)}",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 30,
                             fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        "${thisDayEarning}",
+                        "\$${format.format(thisDayExpense)} ${context.translate.thisday}",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -372,48 +412,25 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ],
                   ),
-                  Container(
-                    width: 200,
-                    child: SfCartesianChart(
-                      plotAreaBorderColor: Colors
-                          .transparent, // Arka planın kenar çizgisini saydam yapar
-                      plotAreaBackgroundColor:
-                          Colors.transparent, // Arka plan rengini saydam yapar
-                      primaryXAxis: NumericAxis(
-                        isVisible: true, // X ekseni görünür
-                        majorGridLines: MajorGridLines(
-                            width: 0), // X ekseni çizgisini gizler
-                      ),
-                      primaryYAxis: NumericAxis(
-                          isVisible: false), // Y ekseni çizgisini gizler
-                      series: <CartesianSeries>[
-                        // Spline grafik serisi
-                        SplineSeries<ChartData, int>(
-                          dataSource: chartData,
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y,
-                          splineType: SplineType
-                              .natural, // Spline çizgisi sonunda yuvarlak bir bitiş ekler
-                        ),
-                      ],
-                    ),
-                  )
                 ],
               ),
             ),
             SizedBox(
               height: 10,
             ),
-            Text(
-              '${context.translate.today} ,  ${abbreviatedMonths[currentMonth - 1]} ${DateTime.now().day}',
-              style: TextStyle(color: Colors.grey, fontSize: 16),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            for (var i = 0; i < 5; i++)
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 5),
+            for (var i = 0; i < firstfiveexpenseData.length; i++)
+              if(DateTime.parse(firstfiveexpenseData[i]["expenseDate"]).day == DateTime.now().day)
+                   Text(
+                          '${context.translate.today} ,  ${abbreviatedMonths[currentMonth - 1]} ${DateTime.now().day}',
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                   ),
+                   SizedBox(
+                          height: 10,
+                   ),
+             else
+
+             Container(
+                   padding: EdgeInsets.symmetric(vertical: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -426,7 +443,7 @@ class _HomeBodyState extends State<HomeBody> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Image.asset(
-                            "assets/icons/salary.png",
+                            "assets/icons/${firstfiveexpenseData[i]["category"].toString().toLowerCase()}.png",
                             width: 40,
                           ),
                         ),
@@ -436,15 +453,15 @@ class _HomeBodyState extends State<HomeBody> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Salary"),
+                            Text("${firstfiveexpenseData[i]["expenseName"]}"),
                             Text(
-                                '${DateTime.now().hour}:${DateTime.now().minute}')
+                                '${DateTime.parse(firstfiveexpenseData[i]["expenseDate"]).hour}:${DateTime.parse(firstfiveexpenseData[i]["expenseDate"]).minute}')
                           ],
                         )
                       ],
                     ),
                     Text(
-                      "\$12.23",
+                      "\$${firstfiveexpenseData[i]["expense"]}",
                       style: TextStyle(fontSize: 25),
                     )
                   ],
@@ -994,9 +1011,9 @@ class _HomeBodyState extends State<HomeBody> {
                 children: [
                   Row(
                     children: [
-                      Center(
-                        child: Container(
-                          width: 40,
+                        Center(
+                          child: Container(
+                            width: 40,
                           height: 8,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),

@@ -184,6 +184,7 @@ class _MyBodyState extends State<MyBody> {
                 ),
               ),
               onPressed: () {
+                addExpense(categoryMap[selectedImage]!);
                 print(
                     "Name : $expenseValue Value : $expenseamountValue Choose : ${categoryMap[selectedImage]}");
               },
@@ -197,7 +198,25 @@ class _MyBodyState extends State<MyBody> {
       ],
     );
   }
+
+  Future<void> addExpense(String category) async {
+    DbHelper dbHelper = DbHelper();
+    await dbHelper.open();
+    await dbHelper.addData(category, expenseValue, DateTime.now().toString(),
+        double.parse(expenseamountValue));
+    List<Map<String, dynamic>> data = await dbHelper.getData();
+    print(data);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Home(),
+        ));
+  }
+
 }
+
+
+
 
 Map<String, String> initMap(BuildContext context) {
   return {
