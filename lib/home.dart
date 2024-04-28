@@ -46,7 +46,21 @@ List<Map<String, dynamic>> firstfiveearningData = [];
 List<Map<String, dynamic>> firstfiveexpenseData = [];
 
 class _HomeBodyState extends State<HomeBody> {
+
+  double e1 = 0.0;
+  double e2 = 0.0;
+  double e3 = 0.0;
+  double e4 = 0.0;
+
+  String e1name = "";
+  String e2name = "";
+  String e3name = "";
+  String e4name = "";
+
+
   double appBarIconWidth = 30.0;
+
+  double expenseStatisticTotal = 0;
 
   int touchedIndex = -1;
 
@@ -85,7 +99,6 @@ class _HomeBodyState extends State<HomeBody> {
       }
     }
 
-    print(expenseData);
 
     earningData = earningData.reversed.toList();
 
@@ -143,6 +156,9 @@ class _HomeBodyState extends State<HomeBody> {
   }
 
 
+
+
+
   var format = NumberFormat("#,##0.00", "tr_TR");
 
 
@@ -150,6 +166,7 @@ class _HomeBodyState extends State<HomeBody> {
   Widget build(BuildContext context) {
     List<String> abbreviatedMonths = initList(context);
     getEarning();
+    setExpenseStatistics("day");
     return Container(
       padding: EdgeInsets.all(16),
       child: SingleChildScrollView(
@@ -418,55 +435,52 @@ class _HomeBodyState extends State<HomeBody> {
             SizedBox(
               height: 10,
             ),
+            Text(
+              '${context.translate.today} ,  ${abbreviatedMonths[currentMonth - 1]} ${DateTime.now().day}',
+              style: TextStyle(color: Colors.grey, fontSize: 16),
+            ),
+            SizedBox(
+              height: 10,
+            ),
             for (var i = 0; i < firstfiveexpenseData.length; i++)
-              if(DateTime.parse(firstfiveexpenseData[i]["expenseDate"]).day == DateTime.now().day)
-                   Text(
-                          '${context.translate.today} ,  ${abbreviatedMonths[currentMonth - 1]} ${DateTime.now().day}',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
-                   ),
-                   SizedBox(
-                          height: 10,
-                   ),
-             else
-
-             Container(
-                   padding: EdgeInsets.symmetric(vertical: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(12),
+                   Container(
+                         padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Image.asset(
+                                  "assets/icons/${firstfiveexpenseData[i]["category"].toString().toLowerCase().replaceAll(" ", "")}.png",
+                                  width: 40,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 6,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("${firstfiveexpenseData[i]["expenseName"]}"),
+                                  Text(
+                                      '${DateTime.parse(firstfiveexpenseData[i]["expenseDate"]).hour}:${DateTime.parse(firstfiveexpenseData[i]["expenseDate"]).minute}')
+                                ],
+                              )
+                            ],
                           ),
-                          child: Image.asset(
-                            "assets/icons/${firstfiveexpenseData[i]["category"].toString().toLowerCase()}.png",
-                            width: 40,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 6,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("${firstfiveexpenseData[i]["expenseName"]}"),
-                            Text(
-                                '${DateTime.parse(firstfiveexpenseData[i]["expenseDate"]).hour}:${DateTime.parse(firstfiveexpenseData[i]["expenseDate"]).minute}')
-                          ],
-                        )
-                      ],
+                          Text(
+                            "\$${firstfiveexpenseData[i]["expense"]}",
+                            style: TextStyle(fontSize: 25),
+                          )
+                        ],
+                      ),
                     ),
-                    Text(
-                      "\$${firstfiveexpenseData[i]["expense"]}",
-                      style: TextStyle(fontSize: 25),
-                    )
-                  ],
-                ),
-              ),
             SizedBox(
               height: 10,
             ),
@@ -552,7 +566,7 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "\$855",
+                          "\$${getExpenseByCategory("Shop")}",
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.w500),
                         )
@@ -593,7 +607,7 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "\$855",
+                          "\$${getExpenseByCategory("Car")}",
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.w500),
                         )
@@ -624,7 +638,7 @@ class _HomeBodyState extends State<HomeBody> {
                         height: 5,
                       ),
                       Text(
-                        "\$855",
+                        "\$${getExpenseByCategory("Medicine")}",
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.w500),
                       )
@@ -654,7 +668,7 @@ class _HomeBodyState extends State<HomeBody> {
                         height: 5,
                       ),
                       Text(
-                        "\$855",
+                        "\$${getExpenseByCategory("Clothes")}",
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.w500),
                       )
@@ -684,7 +698,7 @@ class _HomeBodyState extends State<HomeBody> {
                         height: 5,
                       ),
                       Text(
-                        "\$855",
+                        "\$${getExpenseByCategory("Pet Supplies")}",
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.w500),
                       )
@@ -714,7 +728,7 @@ class _HomeBodyState extends State<HomeBody> {
                         height: 5,
                       ),
                       Text(
-                        "\$855",
+                        "\$${getExpenseByCategory("Recreation and Entertainment")}",
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.w500),
                       )
@@ -744,7 +758,7 @@ class _HomeBodyState extends State<HomeBody> {
                         height: 5,
                       ),
                       Text(
-                        "\$855",
+                        "\$${getExpenseByCategory("Taxes")}",
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.w500),
                       )
@@ -773,7 +787,7 @@ class _HomeBodyState extends State<HomeBody> {
                         height: 5,
                       ),
                       Text(
-                        "\$855",
+                        "\$${getExpenseByCategory("Eat")}",
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.w500),
                       )
@@ -803,7 +817,7 @@ class _HomeBodyState extends State<HomeBody> {
                         height: 5,
                       ),
                       Text(
-                        "\$855",
+                        "\$${getExpenseByCategory("Gifts")}",
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.w500),
                       )
@@ -863,6 +877,7 @@ class _HomeBodyState extends State<HomeBody> {
                       setState(() {
                         setState(() {
                           selectedTimeFilter = "week";
+                          setExpenseStatistics("week");
                         });
                       });
                     },
@@ -897,6 +912,7 @@ class _HomeBodyState extends State<HomeBody> {
                       setState(() {
                         setState(() {
                           selectedTimeFilter = "month";
+                          setExpenseStatistics("month");
                         });
                       });
                     },
@@ -931,6 +947,7 @@ class _HomeBodyState extends State<HomeBody> {
                       setState(() {
                         setState(() {
                           selectedTimeFilter = "year";
+                          setExpenseStatistics("year");
                         });
                       });
                     },
@@ -1000,7 +1017,7 @@ class _HomeBodyState extends State<HomeBody> {
                   height: 300,
                   child: Center(
                       child: Text(
-                    "\$3.250",
+                    "\$${expenseStatisticTotal}",
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
                   ))),
             ]),
@@ -1022,7 +1039,7 @@ class _HomeBodyState extends State<HomeBody> {
                         ),
                       ),
                       Text(
-                        " ${context.translate.taxes}",
+                        e1name,
                         style: TextStyle(fontSize: 18),
                       ),
                     ],
@@ -1041,7 +1058,7 @@ class _HomeBodyState extends State<HomeBody> {
                         ),
                       ),
                       Text(
-                        " ${context.translate.gifts}",
+                        e2name,
                         style: TextStyle(fontSize: 18),
                       ),
                     ],
@@ -1060,7 +1077,7 @@ class _HomeBodyState extends State<HomeBody> {
                         ),
                       ),
                       Text(
-                        " ${context.translate.eat}",
+                        e3name,
                         style: TextStyle(fontSize: 18),
                       ),
                     ],
@@ -1154,7 +1171,7 @@ class _HomeBodyState extends State<HomeBody> {
         case 0:
           return PieChartSectionData(
             color: Colors.blue,
-            value: 40,
+            value: e1,
             title: '',
             radius: radius,
             titleStyle: TextStyle(
@@ -1167,7 +1184,7 @@ class _HomeBodyState extends State<HomeBody> {
         case 1:
           return PieChartSectionData(
             color: Colors.green,
-            value: 30,
+            value: e2,
             title: '',
             radius: radius,
             titleStyle: TextStyle(
@@ -1180,7 +1197,7 @@ class _HomeBodyState extends State<HomeBody> {
         case 2:
           return PieChartSectionData(
             color: Colors.red,
-            value: 15,
+            value: e3,
             title: '',
             radius: radius,
             titleStyle: TextStyle(
@@ -1193,7 +1210,7 @@ class _HomeBodyState extends State<HomeBody> {
         case 3:
           return PieChartSectionData(
             color: Colors.grey,
-            value: 15,
+            value: e4,
             title: '',
             radius: radius,
             titleStyle: TextStyle(
@@ -1213,6 +1230,68 @@ class _HomeBodyState extends State<HomeBody> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('savedLocale', language);
   }
+
+  String getExpenseByCategory(String category) {
+    double totalExpense = 0;
+    for(var expense in expenseData){
+       if(expense["category"] == category){
+         totalExpense += expense["expense"];
+       }
+
+    }
+
+    if(totalExpense >= e1){
+      e1 = totalExpense;
+      e1name = category;
+    }else if(totalExpense >= e2){
+      e2 = totalExpense;
+      e2name = category;
+    }else if(totalExpense >= e3){
+      e3 = totalExpense;
+      e3name = category;
+    }else if(totalExpense >= e4){
+      e4 = totalExpense;
+    }
+
+
+
+    return totalExpense.toString();
+  }
+
+
+  void setExpenseStatistics(String filter){
+    expenseStatisticTotal = 0;
+     if(filter == "day"){
+       for(var expense in expenseData){
+         if(DateTime.parse(expense["expenseDate"]).day == DateTime.now().day){
+           setState(() {
+             expenseStatisticTotal += expense["expense"];
+           });
+
+         }
+       }
+     }else if(filter == "week"){
+      for(var expense in expenseData){
+        if(DateTime.parse(expense["expenseDate"]).day + 7 > DateTime.now().day){
+          expenseStatisticTotal += expense["expense"];
+        }
+      }
+    }else if(filter == "month"){
+      for(var expense in expenseData){
+        if(DateTime.parse(expense["expenseDate"]).month == DateTime.now().month){
+          expenseStatisticTotal += expense["expense"];
+        }
+      }
+    }else if(filter == "year"){
+      for(var expense in expenseData){
+        if(DateTime.parse(expense["expenseDate"]).year == DateTime.now().year){
+          expenseStatisticTotal += expense["expense"];
+        }
+      }
+    }
+  }
+
+
 }
 
 class ChartData {
