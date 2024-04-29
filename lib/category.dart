@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, unused_import, unnecessary_import
+// ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, unused_import, unnecessary_import, unused_element, unused_field, avoid_print, unnecessary_brace_in_string_interps
 
 import 'dart:ffi';
 
@@ -34,9 +34,6 @@ class CategoryBody extends StatefulWidget {
   State<CategoryBody> createState() => _CategoryBodyState();
 }
 
-
-
-
 List<Map<String, dynamic>> data = [];
 List<Map<String, dynamic>> earningData = [];
 List<Map<String, dynamic>> expenseData = [];
@@ -45,30 +42,17 @@ List<Map<String, dynamic>> expenseToday = [];
 List<Map<String, dynamic>> expenseYesterday = [];
 List<Map<String, dynamic>> expenseThisWeek = [];
 
-
 Map<int, bool> clickedMap = {};
 
 class _CategoryBodyState extends State<CategoryBody> {
-
   double totalExpense = 0.0;
   double thisWeekExpense = 0.0;
-  List<double> expenseWeekDayList = [0.0,0.0,0.0,0.0,0.0,0.0,0.0];
+  List<double> expenseWeekDayList = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 
   int selectedElementID = 0;
 
-
-
-
-
-
-
   Color notClickedColor = Colors.white;
   Color clickedColor = Colors.white;
-
-
-
-
-
 
   Future<void> getEarning() async {
     DbHelper dbHelper = DbHelper();
@@ -88,60 +72,50 @@ class _CategoryBodyState extends State<CategoryBody> {
       }
     }
 
-
-
     expenseData = expenseData.reversed.toList();
 
-
     await setTotalExpense();
-
-
   }
-
-
-
 
   Future<void> setTotalExpense() async {
     double total = 0.0;
     double thisWeek = 0.0;
-    expenseWeekDayList = [0.0,0.0,0.0,0.0,0.0,0.0,0.0];
+    expenseWeekDayList = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 
     for (var expense in expenseData) {
       total += expense["expense"];
 
-      clickedMap.addAll({expense["id"]:false});
+      clickedMap.addAll({expense["id"]: false});
 
-      expenseWeekDayList[DateTime.parse(expense["expenseDate"]).weekday-1] += expense["expense"]!;
+      expenseWeekDayList[DateTime.parse(expense["expenseDate"]).weekday - 1] +=
+          expense["expense"]!;
 
       if (DateTime.parse(expense["expenseDate"]).day == DateTime.now().day) {
         thisWeek += expense["expense"];
 
         expenseToday.add(expense);
-
-
-
-      }else if (DateTime.parse(expense["expenseDate"]).add(Duration(days: 1)).day  == DateTime.now().day) {
+      } else if (DateTime.parse(expense["expenseDate"])
+              .add(Duration(days: 1))
+              .day ==
+          DateTime.now().day) {
         thisWeek += expense["expense"];
 
         expenseYesterday.add(expense);
-      }else if((((DateTime.parse(expense["expenseDate"]).month - 1) * 30) + DateTime.parse(expense["expenseDate"]).day) + 7 > (((DateTime.now().month - 1) * 30) + DateTime.now().day)){
+      } else if ((((DateTime.parse(expense["expenseDate"]).month - 1) * 30) +
+                  DateTime.parse(expense["expenseDate"]).day) +
+              7 >
+          (((DateTime.now().month - 1) * 30) + DateTime.now().day)) {
         thisWeek += expense["expense"];
 
         expenseThisWeek.add(expense);
       }
     }
 
-
-
-
-
     setState(() {
       totalExpense = total;
       thisWeekExpense = thisWeek;
     });
-
   }
-
 
   @override
   void initState() {
@@ -152,12 +126,8 @@ class _CategoryBodyState extends State<CategoryBody> {
     });
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
-
     return Container(
       child: Column(
         children: [
@@ -186,9 +156,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                   style: TextStyle(color: Colors.white, fontSize: 22),
                 ),
                 Row(
-                  children: [
-
-                  ],
+                  children: [],
                 )
               ],
             ),
@@ -244,14 +212,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-
-                            for(var day in  getDayStatistic())
-                                day,
-
-
-
-
-
+                            for (var day in getDayStatistic()) day,
                           ],
                         ),
                       )
@@ -278,22 +239,13 @@ class _CategoryBodyState extends State<CategoryBody> {
                         SizedBox(
                           height: 30,
                         ),
-                        for(var container in getExpense("today"))
-                           container,
-                        for(var container in getExpense("yesterday"))
+                        for (var container in getExpense("today")) container,
+                        for (var container in getExpense("yesterday"))
                           container,
-                        for(var container in getExpense("week"))
-                          container,
-
-
-
-
-
-
+                        for (var container in getExpense("week")) container,
                         SizedBox(
                           height: 500,
                         ),
-
                       ],
                     ),
                   ),
@@ -306,259 +258,253 @@ class _CategoryBodyState extends State<CategoryBody> {
     );
   }
 
-
-
   getExpense(String s) {
-      List<Column> columnList = [];
+    List<Column> columnList = [];
 
-      if(s == "today"){
-        columnList.add(Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(context.translate.expensestoday),
-                GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    '+ ${context.translate.addexpense}',
-                    style: TextStyle(
-                        color: Color(0xff41B746),
-                        decoration: TextDecoration.underline,
-                        decorationColor: Color(0xff41B746),
-                        fontSize: 14),
-                  ),
-                ),
-              ],
-            ),
-            for (int i = 0; i < expenseToday.length; i++)
+    if (s == "today") {
+      columnList.add(Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(context.translate.expensestoday),
               GestureDetector(
-                onTap: (){
-                  setState(() {
-                    clickedMap.forEach((key, value) {
-                      if (value == true) {
-                        clickedMap[key] = false;
-                      }
-                    });
-                    clickedMap[expenseToday[i]["id"]] = true;
-                    selectedElementID = expenseToday[i]["id"];
-                  });
-                  print(clickedMap);
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                  decoration: BoxDecoration(
-                    color: clickedMap[expenseToday[i]["id"]]! ? Colors.grey[300] : Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Image.asset(
-                              "assets/icons/${expenseToday[i]["category"].toString().toLowerCase().replaceAll(" ", "")}.png",
-                              width: 40,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 6,
-                          ),
-                          Column(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            children: [
-                              Text("${expenseToday[i]["expenseName"]}"),
-                              Text(
-                                  '${DateTime.parse(expenseToday[i]["expenseDate"]).hour}:${DateTime.parse(expenseToday[i]["expenseDate"]).minute}')
-                            ],
-                          )
-                        ],
-                      ),
-                      Text(
-                        "\$${expenseToday[i]["expense"]}",
-                        style: TextStyle(fontSize: 25),
-                      )
-                    ],
-                  ),
+                onTap: () {},
+                child: Text(
+                  '+ ${context.translate.addexpense}',
+                  style: TextStyle(
+                      color: Color(0xff41B746),
+                      decoration: TextDecoration.underline,
+                      decorationColor: Color(0xff41B746),
+                      fontSize: 14),
                 ),
               ),
-          ],
-        ));
-      }if(s == "yesterday"){
-        columnList.add(Column(
-          children: [
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(context.translate.expensesyesterday),
-              ],
-            ),
-            for (int i = 0; i < expenseYesterday.length; i++)
-              GestureDetector(
-                onTap: (){
-                  setState(() {
-                    clickedMap.forEach((key, value) {
-                      if (value == true) {
-                        clickedMap[key] = false;
-                      }
-                    });
-                    clickedMap[expenseToday[i]["id"]] = true;
-                    selectedElementID = expenseToday[i]["id"];
+            ],
+          ),
+          for (int i = 0; i < expenseToday.length; i++)
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  clickedMap.forEach((key, value) {
+                    if (value == true) {
+                      clickedMap[key] = false;
+                    }
                   });
-                  print(clickedMap);
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Image.asset(
-                              "assets/icons/${expenseYesterday[i]["category"].toString().toLowerCase().replaceAll(" ", "")}.png",
-                              width: 40,
-                            ),
+                  clickedMap[expenseToday[i]["id"]] = true;
+                  selectedElementID = expenseToday[i]["id"];
+                });
+                print(clickedMap);
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: clickedMap[expenseToday[i]["id"]]!
+                      ? Colors.grey[300]
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          SizedBox(
-                            width: 6,
+                          child: Image.asset(
+                            "assets/icons/${expenseToday[i]["category"].toString().toLowerCase().replaceAll(" ", "")}.png",
+                            width: 40,
                           ),
-                          Column(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            children: [
-                              Text("${expenseYesterday[i]["expenseName"]}"),
-                              Text(
-                                  '${DateTime.parse(expenseYesterday[i]["expenseDate"]).hour}:${DateTime.parse(expenseYesterday[i]["expenseDate"]).minute}'),
-                            ],
-                          )
-                        ],
-                      ),
-                      Text(
-                        "\$${expenseYesterday[i]["expense"]}",
-                        style: TextStyle(fontSize: 25),
-                      )
-                    ],
-                  ),
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${expenseToday[i]["expenseName"]}"),
+                            Text(
+                                '${DateTime.parse(expenseToday[i]["expenseDate"]).hour}:${DateTime.parse(expenseToday[i]["expenseDate"]).minute}')
+                          ],
+                        )
+                      ],
+                    ),
+                    Text(
+                      "\$${expenseToday[i]["expense"]}",
+                      style: TextStyle(fontSize: 25),
+                    )
+                  ],
                 ),
               ),
-          ],
-        ));
-      }if(s == "week"){
-        columnList.add(Column(
-          children: [
-            SizedBox(
-              height: 15,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("EXPENSES THIS WEEK"),
-              ],
-            ),
-            for (int i = 0; i < expenseThisWeek.length; i++)
-              GestureDetector(
-                onTap: (){
-                  setState(() {
-                    clickedMap.forEach((key, value) {
-                      if (value == true) {
-                        clickedMap[key] = false;
-                      }
-                    });
-                    clickedMap[expenseToday[i]["id"]] = true;
-                    selectedElementID = expenseToday[i]["id"];
+        ],
+      ));
+    }
+    if (s == "yesterday") {
+      columnList.add(Column(
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(context.translate.expensesyesterday),
+            ],
+          ),
+          for (int i = 0; i < expenseYesterday.length; i++)
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  clickedMap.forEach((key, value) {
+                    if (value == true) {
+                      clickedMap[key] = false;
+                    }
                   });
-                  print(clickedMap);
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Image.asset(
-                              "assets/icons/${expenseThisWeek[i]["category"].toString().toLowerCase().replaceAll(" ", "")}.png",
-                              width: 40,
-                            ),
+                  clickedMap[expenseToday[i]["id"]] = true;
+                  selectedElementID = expenseToday[i]["id"];
+                });
+                print(clickedMap);
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          SizedBox(
-                            width: 6,
+                          child: Image.asset(
+                            "assets/icons/${expenseYesterday[i]["category"].toString().toLowerCase().replaceAll(" ", "")}.png",
+                            width: 40,
                           ),
-                          Column(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            children: [
-                              Text("${expenseThisWeek[i]["expenseName"]}"),
-                              Text(
-                                  '${DateTime.parse(expenseThisWeek[i]["expenseDate"]).hour}:${DateTime.parse(expenseThisWeek[i]["expenseDate"]).minute}'),
-
-                            ],
-                          )
-                        ],
-                      ),
-                      Text(
-                        "\$${expenseThisWeek[i]["expense"]}",
-                        style: TextStyle(fontSize: 25),
-                      )
-                    ],
-                  ),
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${expenseYesterday[i]["expenseName"]}"),
+                            Text(
+                                '${DateTime.parse(expenseYesterday[i]["expenseDate"]).hour}:${DateTime.parse(expenseYesterday[i]["expenseDate"]).minute}'),
+                          ],
+                        )
+                      ],
+                    ),
+                    Text(
+                      "\$${expenseYesterday[i]["expense"]}",
+                      style: TextStyle(fontSize: 25),
+                    )
+                  ],
                 ),
               ),
-          ],
-        ));
-      }
-
+            ),
+        ],
+      ));
+    }
+    if (s == "week") {
+      columnList.add(Column(
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("EXPENSES THIS WEEK"),
+            ],
+          ),
+          for (int i = 0; i < expenseThisWeek.length; i++)
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  clickedMap.forEach((key, value) {
+                    if (value == true) {
+                      clickedMap[key] = false;
+                    }
+                  });
+                  clickedMap[expenseToday[i]["id"]] = true;
+                  selectedElementID = expenseToday[i]["id"];
+                });
+                print(clickedMap);
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Image.asset(
+                            "assets/icons/${expenseThisWeek[i]["category"].toString().toLowerCase().replaceAll(" ", "")}.png",
+                            width: 40,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${expenseThisWeek[i]["expenseName"]}"),
+                            Text(
+                                '${DateTime.parse(expenseThisWeek[i]["expenseDate"]).hour}:${DateTime.parse(expenseThisWeek[i]["expenseDate"]).minute}'),
+                          ],
+                        )
+                      ],
+                    ),
+                    Text(
+                      "\$${expenseThisWeek[i]["expense"]}",
+                      style: TextStyle(fontSize: 25),
+                    )
+                  ],
+                ),
+              ),
+            ),
+        ],
+      ));
+    }
 
     return columnList;
   }
 
   getDayStatistic() {
     List<Column> columnList = [];
-    for(int i =1;i<=DateTime.now().weekday ;i++){
+    for (int i = 1; i <= DateTime.now().weekday; i++) {
       print(i);
     }
 
-    for(int i =1;i<=DateTime.now().weekday ;i++){
+    for (int i = 1; i <= DateTime.now().weekday; i++) {
       columnList.add(Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            '\$${expenseWeekDayList[i-1].toString()}',
+            '\$${expenseWeekDayList[i - 1].toString()}',
             style: TextStyle(color: Colors.white),
           ),
           Stack(
             children: [
               Container(
                 width: 40,
-                height: getHeight(expenseWeekDayList[i-1]),
+                height: getHeight(expenseWeekDayList[i - 1]),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: Colors.green.shade300,
@@ -570,11 +516,8 @@ class _CategoryBodyState extends State<CategoryBody> {
                 right: 0,
                 child: Center(
                   child: Text(
-                    findDayOfWeek(i)
-                        .toUpperCase()
-                        .substring(0, 3),
-                    style: TextStyle(
-                        color: Colors.green.shade100),
+                    findDayOfWeek(i).toUpperCase().substring(0, 3),
+                    style: TextStyle(color: Colors.green.shade100),
                   ),
                 ),
               ),
@@ -582,9 +525,8 @@ class _CategoryBodyState extends State<CategoryBody> {
           )
         ],
       ));
-
     }
-    for(int i =1;i<=7 - DateTime.now().weekday ;i++){
+    for (int i = 1; i <= 7 - DateTime.now().weekday; i++) {
       columnList.add(Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -608,11 +550,8 @@ class _CategoryBodyState extends State<CategoryBody> {
                 right: 0,
                 child: Center(
                   child: Text(
-                    findDayOfWeek(i)
-                        .toUpperCase()
-                        .substring(0, 3),
-                    style: TextStyle(
-                        color: Colors.green.shade100),
+                    findDayOfWeek(i).toUpperCase().substring(0, 3),
+                    style: TextStyle(color: Colors.green.shade100),
                   ),
                 ),
               ),
@@ -624,7 +563,6 @@ class _CategoryBodyState extends State<CategoryBody> {
 
     return columnList;
   }
-
 
   String findDayOfWeek(int dayNumber) {
     switch (dayNumber) {
@@ -648,21 +586,17 @@ class _CategoryBodyState extends State<CategoryBody> {
   }
 
   getHeight(double expenseWeekDayList) {
-
     var height = expenseWeekDayList;
 
-    if(height > 1000.0){
+    if (height > 1000.0) {
       return 150.0;
-    }else{
-      if((height / 10).toDouble() < 30.0){
+    } else {
+      if ((height / 10).toDouble() < 30.0) {
         return 35.0;
       }
       return (height / 10).toDouble();
     }
-
-
   }
-
 
   bool _isVisible = false;
   void _showDeleteConfirmationDialog() {
@@ -694,8 +628,4 @@ class _CategoryBodyState extends State<CategoryBody> {
       },
     );
   }
-
-
 }
-
-

@@ -50,9 +50,9 @@ List<Map<String, dynamic>> firstfiveexpenseData = [];
 double expenseStatisticTotal = 0;
 String currencyCode = "USD";
 double currencyRate = 1;
+String currencySymbol = "\$";
 
 class _HomeBodyState extends State<HomeBody> {
-
   double e1 = 0.0;
   double e2 = 0.0;
   double e3 = 0.0;
@@ -63,10 +63,7 @@ class _HomeBodyState extends State<HomeBody> {
   String e3name = "";
   String e4name = "";
 
-
   double appBarIconWidth = 30.0;
-
-
 
   int touchedIndex = -1;
 
@@ -105,12 +102,11 @@ class _HomeBodyState extends State<HomeBody> {
       }
     }
 
-
     earningData = earningData.reversed.toList();
 
     if (earningData.length > 5) {
       firstfiveearningData = earningData.sublist(0, 5);
-    }else{
+    } else {
       firstfiveearningData = earningData;
     }
 
@@ -118,14 +114,12 @@ class _HomeBodyState extends State<HomeBody> {
 
     if (expenseData.length > 5) {
       firstfiveexpenseData = expenseData.sublist(0, 5);
-    }else{
+    } else {
       firstfiveexpenseData = expenseData;
     }
 
     await setTotalEarning();
     await setTotalExpense();
-
-
   }
 
   Future<void> setTotalEarning() async {
@@ -158,7 +152,12 @@ class _HomeBodyState extends State<HomeBody> {
       totalExpense = total;
       thisDayExpense = thisDay;
     });
+  }
 
+  Future<void> setCurrencyDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    currencyRate = prefs.getDouble('currencyRate') ?? 1;
+    currencySymbol = prefs.getString('currencySymbol') ?? "\$";
   }
 
   @override
@@ -168,14 +167,10 @@ class _HomeBodyState extends State<HomeBody> {
     getEarning();
     getCategoryListasync();
     setExpenseStatistics("day");
+    setCurrencyDetails();
   }
 
-
-
-
-
   var format = NumberFormat("#,##0.00", "tr_TR");
-
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +198,8 @@ class _HomeBodyState extends State<HomeBody> {
                         setState(() {
                           if (result != null) {
                             //selectedCurrency = result;
-                            print(result);
+                            currencyRate = result[0];
+                            currencySymbol = result[1];
                           } else {
                             print("NO CHOOSE");
                           }
@@ -301,16 +297,18 @@ class _HomeBodyState extends State<HomeBody> {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        "\$${format.format(totalEarning)}",
+                        "$currencySymbol${format.format(totalEarning * currencyRate)}",
                         style: TextStyle(
                             color: Colors.white,
+                            fontFamily: 'Arial',
                             fontSize: 30,
                             fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        "\$${format.format(thisDayEarning)} ${context.translate.thisday}",
+                        "$currencySymbol${format.format(thisDayEarning * currencyRate)} ${context.translate.thisday}",
                         style: TextStyle(
                             color: Colors.white,
+                            fontFamily: 'Arial',
                             fontSize: 18,
                             fontWeight: FontWeight.w300),
                       ),
@@ -361,8 +359,12 @@ class _HomeBodyState extends State<HomeBody> {
                         )
                       ],
                     ),
-                    Text("${earningData[i]["expense"]}",
-                        style: TextStyle(fontSize: 25))
+                    Text(
+                        "$currencySymbol${format.format(earningData[i]["expense"] * currencyRate)}",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontFamily: 'Arial',
+                        ))
                   ],
                 ),
               ),
@@ -414,7 +416,9 @@ class _HomeBodyState extends State<HomeBody> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: 16,),
+                  SizedBox(
+                    width: 16,
+                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -427,17 +431,19 @@ class _HomeBodyState extends State<HomeBody> {
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        "\$${format.format(totalExpense)}",
+                        "$currencySymbol${format.format(totalExpense * currencyRate)}",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 30,
+                            fontFamily: 'Arial',
                             fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        "\$${format.format(thisDayExpense)} ${context.translate.thisday}",
+                        "$currencySymbol${format.format(thisDayExpense * currencyRate)} ${context.translate.thisday}",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
+                            fontFamily: 'Arial',
                             fontWeight: FontWeight.w300),
                       ),
                     ],
@@ -456,44 +462,47 @@ class _HomeBodyState extends State<HomeBody> {
               height: 10,
             ),
             for (var i = 0; i < firstfiveexpenseData.length; i++)
-                   Container(
-                         padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Image.asset(
-                                  "assets/icons/${firstfiveexpenseData[i]["category"].toString().toLowerCase().replaceAll(" ", "")}.png",
-                                  width: 40,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 6,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("${firstfiveexpenseData[i]["expenseName"]}"),
-                                  Text(
-                                      '${DateTime.parse(firstfiveexpenseData[i]["expenseDate"]).hour}:${DateTime.parse(firstfiveexpenseData[i]["expenseDate"]).minute}')
-                                ],
-                              )
-                            ],
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          Text(
-                            "\$${firstfiveexpenseData[i]["expense"]}",
-                            style: TextStyle(fontSize: 25),
-                          )
-                        ],
-                      ),
+                          child: Image.asset(
+                            "assets/icons/${firstfiveexpenseData[i]["category"].toString().toLowerCase().replaceAll(" ", "")}.png",
+                            width: 40,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("${firstfiveexpenseData[i]["expenseName"]}"),
+                            Text(
+                                '${DateTime.parse(firstfiveexpenseData[i]["expenseDate"]).hour}:${DateTime.parse(firstfiveexpenseData[i]["expenseDate"]).minute}')
+                          ],
+                        )
+                      ],
                     ),
+                    Text(
+                      "$currencySymbol${format.format(firstfiveexpenseData[i]["expense"] * currencyRate)}",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontFamily: 'Arial',
+                      ),
+                    )
+                  ],
+                ),
+              ),
             SizedBox(
               height: 10,
             ),
@@ -529,11 +538,6 @@ class _HomeBodyState extends State<HomeBody> {
             ),
             Wrap(
               children: [
-
-
-
-
-
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -567,9 +571,12 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "\$${getExpenseByCategory("Shop")}",
+                          "$currencySymbol${format.format(getExpenseByCategory("Shop") * currencyRate)}",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w500),
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Arial',
+                          ),
                         )
                       ],
                     ),
@@ -608,16 +615,19 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "\$${getExpenseByCategory("Car")}",
+                          "$currencySymbol${format.format(getExpenseByCategory("Car") * currencyRate)}",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w500),
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Arial',
+                          ),
                         )
                       ],
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -649,16 +659,19 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "\$${getExpenseByCategory("Medicine")}",
+                          "$currencySymbol${format.format(getExpenseByCategory("Medicine") * currencyRate)}",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w500),
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Arial',
+                          ),
                         )
                       ],
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -690,23 +703,26 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "\$${getExpenseByCategory("Clothes")}",
+                          "$currencySymbol${format.format(getExpenseByCategory("Clothes") * currencyRate)}",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w500),
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Arial',
+                          ),
                         )
                       ],
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              Category(categoryName: context.translate.petsupplies),
-                        ),
-                      );
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Category(
+                            categoryName: context.translate.petsupplies),
+                      ),
+                    );
                   },
                   child: Container(
                     margin: EdgeInsets.all(4),
@@ -731,21 +747,25 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "\$${getExpenseByCategory("Pet Supplies")}",
+                          "$currencySymbol${format.format(getExpenseByCategory("Pet Supplies") * currencyRate)}",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w500),
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Arial',
+                          ),
                         )
                       ],
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            Category(categoryName: context.translate.recreationandentertainment),
+                        builder: (context) => Category(
+                            categoryName:
+                                context.translate.recreationandentertainment),
                       ),
                     );
                   },
@@ -772,16 +792,19 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "\$${getExpenseByCategory("Recreation and Entertainment")}",
+                          "$currencySymbol${format.format(getExpenseByCategory("Recreation and Entertainment") * currencyRate)}",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w500),
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Arial',
+                          ),
                         )
                       ],
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -813,16 +836,18 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "\$${getExpenseByCategory("Taxes")}",
+                          "$currencySymbol${format.format(getExpenseByCategory("Taxes") * currencyRate)}",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w500),
+                              fontSize: 25,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Arial'),
                         )
                       ],
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -848,21 +873,24 @@ class _HomeBodyState extends State<HomeBody> {
                           "assets/icons/eat.png",
                           scale: 6,
                         ),
-                        Text(context.translate.eat, textAlign: TextAlign.center),
+                        Text(context.translate.eat,
+                            textAlign: TextAlign.center),
                         SizedBox(
                           height: 5,
                         ),
                         Text(
-                          "\$${getExpenseByCategory("Eat")}",
+                          "$currencySymbol${format.format(getExpenseByCategory("Eat") * currencyRate)}",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w500),
+                              fontSize: 25,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Arial'),
                         )
                       ],
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -894,16 +922,16 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "\$${getExpenseByCategory("Gifts")}",
+                          "$currencySymbol${format.format(getExpenseByCategory("Gifts") * currencyRate)}",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w500),
+                              fontSize: 25,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Arial'),
                         )
                       ],
                     ),
                   ),
                 ),
-
-
               ],
             ),
             SizedBox(
@@ -1098,8 +1126,11 @@ class _HomeBodyState extends State<HomeBody> {
                   height: 300,
                   child: Center(
                       child: Text(
-                    "\$${expenseStatisticTotal}",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                    "$currencySymbol${format.format(expenseStatisticTotal * currencyRate)}",
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Arial'),
                   ))),
             ]),
             SingleChildScrollView(
@@ -1109,9 +1140,9 @@ class _HomeBodyState extends State<HomeBody> {
                 children: [
                   Row(
                     children: [
-                        Center(
-                          child: Container(
-                            width: 40,
+                      Center(
+                        child: Container(
+                          width: 40,
                           height: 8,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
@@ -1189,7 +1220,7 @@ class _HomeBodyState extends State<HomeBody> {
               height: 20,
             ),
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 _launchUrl();
               },
               child: Center(
@@ -1207,16 +1238,15 @@ class _HomeBodyState extends State<HomeBody> {
         ),
       ),
     );
-
   }
 
-  final Uri _url = Uri.parse('https://sites.google.com/view/uni-live-privacy-policy');
+  final Uri _url =
+      Uri.parse('https://sites.google.com/view/uni-live-privacy-policy');
   Future<void> _launchUrl() async {
     if (!await launchUrl(_url)) {
       throw Exception('Could not launch $_url');
     }
   }
-
 
   Row greetingText() {
     var hour = DateTime.now().hour;
@@ -1326,78 +1356,79 @@ class _HomeBodyState extends State<HomeBody> {
     await prefs.setString('savedLocale', language);
   }
 
-  List<String>? catList =  [];
-  getCategoryListasync()  async {
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-     catList =  await prefs.getStringList("catList");
-     setState(() {
-     });
+  List<String>? catList = [];
+  getCategoryListasync() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    catList = await prefs.getStringList("catList");
+    setState(() {});
   }
 
-  String getExpenseByCategory(String category) {
+  double getExpenseByCategory(String category) {
     double totalExpense = 0;
-    for(var expense in expenseData){
-       if(expense["category"] == category){
-         totalExpense += expense["expense"];
-       }
-
+    for (var expense in expenseData) {
+      if (expense["category"] == category) {
+        totalExpense += expense["expense"];
+      }
     }
 
-    if(totalExpense >= e1){
+    if (totalExpense >= e1) {
       e1 = totalExpense;
       e1name = category;
-    }else if(totalExpense >= e2){
+    } else if (totalExpense >= e2) {
       e2 = totalExpense;
       e2name = category;
-    }else if(totalExpense >= e3){
+    } else if (totalExpense >= e3) {
       e3 = totalExpense;
       e3name = category;
-    }else if(totalExpense >= e4){
+    } else if (totalExpense >= e4) {
       e4 = totalExpense;
     }
 
-    return totalExpense.toString();
+    return totalExpense;
   }
 
-
-  void setExpenseStatistics(String filter){
+  void setExpenseStatistics(String filter) {
     expenseStatisticTotal = 0;
-     if(filter == "day"){
-       setState(() {
-         expenseStatisticTotal = 0;
-       });
-       print(expenseStatisticTotal);
-       for(var expense in expenseData){
-         if(DateTime.parse(expense["expenseDate"]).day == DateTime.now().day){
-           setState(() {
-             expenseStatisticTotal += expense["expense"];
-           });
-
-         }
-       }
-     }else if(filter == "week"){
-       expenseStatisticTotal = 0;
-      for(var expense in expenseData){
-        if((((DateTime.parse(expense["expenseDate"]).month - 1) * 30) + DateTime.parse(expense["expenseDate"]).day) + 7 > (((DateTime.now().month - 1) * 30) + DateTime.now().day)){
+    if (filter == "day") {
+      setState(() {
+        expenseStatisticTotal = 0;
+      });
+      print(expenseStatisticTotal);
+      for (var expense in expenseData) {
+        if (DateTime.parse(expense["expenseDate"]).day == DateTime.now().day) {
+          setState(() {
+            expenseStatisticTotal += expense["expense"];
+          });
+        }
+      }
+    } else if (filter == "week") {
+      expenseStatisticTotal = 0;
+      for (var expense in expenseData) {
+        if ((((DateTime.parse(expense["expenseDate"]).month - 1) * 30) +
+                    DateTime.parse(expense["expenseDate"]).day) +
+                7 >
+            (((DateTime.now().month - 1) * 30) + DateTime.now().day)) {
           setState(() {
             expenseStatisticTotal += expense["expense"];
             print(expenseStatisticTotal);
           });
         }
       }
-    }else if(filter == "month"){
-       expenseStatisticTotal = 0;
-      for(var expense in expenseData){
-        if(DateTime.parse(expense["expenseDate"]).month == DateTime.now().month){
+    } else if (filter == "month") {
+      expenseStatisticTotal = 0;
+      for (var expense in expenseData) {
+        if (DateTime.parse(expense["expenseDate"]).month ==
+            DateTime.now().month) {
           setState(() {
             expenseStatisticTotal += expense["expense"];
           });
         }
       }
-    }else if(filter == "year"){
-       expenseStatisticTotal = 0;
-      for(var expense in expenseData){
-        if(DateTime.parse(expense["expenseDate"]).year == DateTime.now().year){
+    } else if (filter == "year") {
+      expenseStatisticTotal = 0;
+      for (var expense in expenseData) {
+        if (DateTime.parse(expense["expenseDate"]).year ==
+            DateTime.now().year) {
           setState(() {
             expenseStatisticTotal += expense["expense"];
           });
@@ -1405,14 +1436,9 @@ class _HomeBodyState extends State<HomeBody> {
       }
     }
 
-     print(expenseStatisticTotal);
+    print(expenseStatisticTotal);
   }
-
-
-
 }
-
-
 
 class ChartData {
   ChartData(this.x, this.y);
