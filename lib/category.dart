@@ -7,11 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unilive/core/extensions/l10n.extensions.dart';
+import 'package:intl/intl.dart';
 
 import 'db_helper.dart';
 import 'expense.dart';
 import 'home.dart';
+
+double currencyRate = 1;
+String currencySymbol = "\$";
 
 class Category extends StatelessWidget {
   final String categoryName;
@@ -117,14 +122,23 @@ class _CategoryBodyState extends State<CategoryBody> {
     });
   }
 
+  Future<void> setCurrencyDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    currencyRate = prefs.getDouble('currencyRate') ?? 1;
+    currencySymbol = prefs.getString('currencySymbol') ?? "\$";
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     setState(() {
+      setCurrencyDetails();
       getEarning();
     });
   }
+
+  var format = NumberFormat("#,##0.0", "tr_TR");
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +198,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                         height: 8,
                       ),
                       Text(
-                        "\$${totalExpense}",
+                        "$currencySymbol${format.format(totalExpense * currencyRate)}",
                         style: TextStyle(color: Colors.white, fontSize: 40),
                       ),
                       SizedBox(
@@ -198,7 +212,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                             style: TextStyle(color: Colors.white, fontSize: 13),
                           ),
                           Text(
-                            "\$${thisWeekExpense}",
+                            "$currencySymbol${format.format(thisWeekExpense * currencyRate)}",
                             style: TextStyle(color: Colors.white, fontSize: 13),
                           ),
                         ],
@@ -334,7 +348,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                       ],
                     ),
                     Text(
-                      "\$${expenseToday[i]["expense"]}",
+                      "$currencySymbol${format.format(expenseToday[i]["expense"] * currencyRate)}",
                       style: TextStyle(fontSize: 25),
                     )
                   ],
@@ -403,7 +417,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                       ],
                     ),
                     Text(
-                      "\$${expenseYesterday[i]["expense"]}",
+                      "$currencySymbol${format.format(expenseYesterday[i]["expense"] * currencyRate)}",
                       style: TextStyle(fontSize: 25),
                     )
                   ],
@@ -472,7 +486,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                       ],
                     ),
                     Text(
-                      "\$${expenseThisWeek[i]["expense"]}",
+                      "$currencySymbol${format.format(expenseThisWeek[i]["expense"] * currencyRate)}",
                       style: TextStyle(fontSize: 25),
                     )
                   ],
@@ -497,7 +511,7 @@ class _CategoryBodyState extends State<CategoryBody> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            '\$${expenseWeekDayList[i - 1].toString()}',
+            '$currencySymbol${format.format(expenseWeekDayList[i - 1] * currencyRate)}',
             style: TextStyle(color: Colors.white),
           ),
           Stack(
@@ -531,7 +545,7 @@ class _CategoryBodyState extends State<CategoryBody> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            '\$0.0',
+            '${currencySymbol}0.0',
             style: TextStyle(color: Colors.white),
           ),
           Stack(

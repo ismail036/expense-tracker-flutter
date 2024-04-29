@@ -171,6 +171,7 @@ class _HomeBodyState extends State<HomeBody> {
   }
 
   var format = NumberFormat("#,##0.00", "tr_TR");
+  var format1 = NumberFormat("#,##0.0", "tr_TR");
 
   @override
   Widget build(BuildContext context) {
@@ -571,7 +572,7 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "$currencySymbol${format.format(getExpenseByCategory("Shop") * currencyRate)}",
+                          "$currencySymbol${format1.format(getExpenseByCategory("Shop") * currencyRate)}",
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w500,
@@ -615,7 +616,7 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "$currencySymbol${format.format(getExpenseByCategory("Car") * currencyRate)}",
+                          "$currencySymbol${format1.format(getExpenseByCategory("Car") * currencyRate)}",
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w500,
@@ -659,7 +660,7 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "$currencySymbol${format.format(getExpenseByCategory("Medicine") * currencyRate)}",
+                          "$currencySymbol${format1.format(getExpenseByCategory("Medicine") * currencyRate)}",
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w500,
@@ -703,7 +704,7 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "$currencySymbol${format.format(getExpenseByCategory("Clothes") * currencyRate)}",
+                          "$currencySymbol${format1.format(getExpenseByCategory("Clothes") * currencyRate)}",
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w500,
@@ -747,7 +748,7 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "$currencySymbol${format.format(getExpenseByCategory("Pet Supplies") * currencyRate)}",
+                          "$currencySymbol${format1.format(getExpenseByCategory("Pet Supplies") * currencyRate)}",
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w500,
@@ -792,7 +793,7 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "$currencySymbol${format.format(getExpenseByCategory("Recreation and Entertainment") * currencyRate)}",
+                          "$currencySymbol${format1.format(getExpenseByCategory("Recreation and Entertainment") * currencyRate)}",
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w500,
@@ -836,7 +837,7 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "$currencySymbol${format.format(getExpenseByCategory("Taxes") * currencyRate)}",
+                          "$currencySymbol${format1.format(getExpenseByCategory("Taxes") * currencyRate)}",
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w500,
@@ -879,7 +880,7 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "$currencySymbol${format.format(getExpenseByCategory("Eat") * currencyRate)}",
+                          "$currencySymbol${format1.format(getExpenseByCategory("Eat") * currencyRate)}",
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w500,
@@ -922,7 +923,7 @@ class _HomeBodyState extends State<HomeBody> {
                           height: 5,
                         ),
                         Text(
-                          "$currencySymbol${format.format(getExpenseByCategory("Gifts") * currencyRate)}",
+                          "$currencySymbol${format1.format(getExpenseByCategory("Gifts") * currencyRate)}",
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w500,
