@@ -42,6 +42,7 @@ dependencies:
   live_currency_rate: ^1.0.4
   sqflite: ^2.3.2
   shared_preferences: ^2.2.3
+  url_launcher: ^6.2.6
 
 dev_dependencies:
   flutter_test:

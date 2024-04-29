@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_print, duplicate_import, depend_on_referenced_packages, unused_import, unnecessary_brace_in_string_interps
 
+import 'dart:async';
 import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter/material.dart';
 import 'package:live_currency_rate/live_currency_rate.dart';
@@ -45,6 +47,10 @@ List<Map<String, dynamic>> expenseData = [];
 List<Map<String, dynamic>> firstfiveearningData = [];
 List<Map<String, dynamic>> firstfiveexpenseData = [];
 
+double expenseStatisticTotal = 0;
+String currencyCode = "USD";
+double currencyRate = 1;
+
 class _HomeBodyState extends State<HomeBody> {
 
   double e1 = 0.0;
@@ -60,7 +66,7 @@ class _HomeBodyState extends State<HomeBody> {
 
   double appBarIconWidth = 30.0;
 
-  double expenseStatisticTotal = 0;
+
 
   int touchedIndex = -1;
 
@@ -155,6 +161,15 @@ class _HomeBodyState extends State<HomeBody> {
 
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getEarning();
+    getCategoryListasync();
+    setExpenseStatistics("day");
+  }
+
 
 
 
@@ -165,8 +180,6 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     List<String> abbreviatedMonths = initList(context);
-    getEarning();
-    setExpenseStatistics("day");
     return Container(
       padding: EdgeInsets.all(16),
       child: SingleChildScrollView(
@@ -189,8 +202,8 @@ class _HomeBodyState extends State<HomeBody> {
                         );
                         setState(() {
                           if (result != null) {
-                            selectedCurrency = result;
-                            print(selectedCurrency);
+                            //selectedCurrency = result;
+                            print(result);
                           } else {
                             print("NO CHOOSE");
                           }
@@ -512,27 +525,15 @@ class _HomeBodyState extends State<HomeBody> {
                   "${context.translate.thismonth} - ${abbreviatedMonths[currentMonth - 1]}",
                   style: TextStyle(color: Colors.grey[500]),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddCategory(),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    '+ ${context.translate.addnewcategory}',
-                    style: TextStyle(
-                        color: Color(0xff41B746),
-                        decoration: TextDecoration.underline,
-                        decorationColor: Color(0xff41B746)),
-                  ),
-                ),
               ],
             ),
             Wrap(
               children: [
+
+
+
+
+
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -615,215 +616,294 @@ class _HomeBodyState extends State<HomeBody> {
                     ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffEBEFF3),
-                      width: 2,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            Category(categoryName: context.translate.medicine),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(4),
+                    width: MediaQuery.of(context).size.width / 3.5,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xffEBEFF3),
+                        width: 2,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/icons/medicine.png",
+                          scale: 6,
+                        ),
+                        Text(context.translate.medicine,
+                            textAlign: TextAlign.center),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "\$${getExpenseByCategory("Medicine")}",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w500),
+                        )
+                      ],
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/icons/medicine.png",
-                        scale: 6,
-                      ),
-                      Text(context.translate.medicine,
-                          textAlign: TextAlign.center),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "\$${getExpenseByCategory("Medicine")}",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
                 ),
-                Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffEBEFF3),
-                      width: 2,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            Category(categoryName: context.translate.clothes),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(4),
+                    width: MediaQuery.of(context).size.width / 3.5,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xffEBEFF3),
+                        width: 2,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/icons/clothes.png",
+                          scale: 6,
+                        ),
+                        Text(context.translate.clothes,
+                            textAlign: TextAlign.center),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "\$${getExpenseByCategory("Clothes")}",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w500),
+                        )
+                      ],
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/icons/clothes.png",
-                        scale: 6,
-                      ),
-                      Text(context.translate.clothes,
-                          textAlign: TextAlign.center),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "\$${getExpenseByCategory("Clothes")}",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
                 ),
-                Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffEBEFF3),
-                      width: 2,
+                GestureDetector(
+                  onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              Category(categoryName: context.translate.petsupplies),
+                        ),
+                      );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(4),
+                    width: MediaQuery.of(context).size.width / 3.5,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xffEBEFF3),
+                        width: 2,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/icons/petsupplies.png",
+                          scale: 6,
+                        ),
+                        Text(context.translate.petsupplies,
+                            textAlign: TextAlign.center),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "\$${getExpenseByCategory("Pet Supplies")}",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w500),
+                        )
+                      ],
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/icons/petsupplies.png",
-                        scale: 6,
-                      ),
-                      Text(context.translate.petsupplies,
-                          textAlign: TextAlign.center),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "\$${getExpenseByCategory("Pet Supplies")}",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
                 ),
-                Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffEBEFF3),
-                      width: 2,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            Category(categoryName: context.translate.recreationandentertainment),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(4),
+                    width: MediaQuery.of(context).size.width / 3.5,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xffEBEFF3),
+                        width: 2,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/icons/recreationandentertainment.png",
+                          scale: 6,
+                        ),
+                        Text(context.translate.recreationandentertainment,
+                            textAlign: TextAlign.center),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "\$${getExpenseByCategory("Recreation and Entertainment")}",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w500),
+                        )
+                      ],
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/icons/recreationandentertainment.png",
-                        scale: 6,
-                      ),
-                      Text(context.translate.recreationandentertainment,
-                          textAlign: TextAlign.center),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "\$${getExpenseByCategory("Recreation and Entertainment")}",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
                 ),
-                Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffEBEFF3),
-                      width: 2,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            Category(categoryName: context.translate.taxes),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(4),
+                    width: MediaQuery.of(context).size.width / 3.5,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xffEBEFF3),
+                        width: 2,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/icons/taxes.png",
+                          scale: 6,
+                        ),
+                        Text(context.translate.taxes,
+                            textAlign: TextAlign.center),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "\$${getExpenseByCategory("Taxes")}",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w500),
+                        )
+                      ],
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/icons/taxes.png",
-                        scale: 6,
-                      ),
-                      Text(context.translate.taxes,
-                          textAlign: TextAlign.center),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "\$${getExpenseByCategory("Taxes")}",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
                 ),
-                Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffEBEFF3),
-                      width: 2,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            Category(categoryName: context.translate.eat),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(4),
+                    width: MediaQuery.of(context).size.width / 3.5,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xffEBEFF3),
+                        width: 2,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/icons/eat.png",
+                          scale: 6,
+                        ),
+                        Text(context.translate.eat, textAlign: TextAlign.center),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "\$${getExpenseByCategory("Eat")}",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w500),
+                        )
+                      ],
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/icons/eat.png",
-                        scale: 6,
-                      ),
-                      Text(context.translate.eat, textAlign: TextAlign.center),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "\$${getExpenseByCategory("Eat")}",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
                 ),
-                Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width / 3.5,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xffEBEFF3),
-                      width: 2,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            Category(categoryName: context.translate.gifts),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(4),
+                    width: MediaQuery.of(context).size.width / 3.5,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xffEBEFF3),
+                        width: 2,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/icons/gifts.png",
+                          scale: 6,
+                        ),
+                        Text(context.translate.gifts,
+                            textAlign: TextAlign.center),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "\$${getExpenseByCategory("Gifts")}",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w500),
+                        )
+                      ],
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/icons/gifts.png",
-                        scale: 6,
-                      ),
-                      Text(context.translate.gifts,
-                          textAlign: TextAlign.center),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "\$${getExpenseByCategory("Gifts")}",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
                 ),
+
+
               ],
             ),
             SizedBox(
@@ -844,6 +924,7 @@ class _HomeBodyState extends State<HomeBody> {
                     onTap: () {
                       setState(() {
                         selectedTimeFilter = "day";
+                        setExpenseStatistics("day");
                       });
                     },
                     child: Container(
@@ -1107,21 +1188,35 @@ class _HomeBodyState extends State<HomeBody> {
             SizedBox(
               height: 20,
             ),
-            Center(
-              child: Text(
-                context.translate.privacy,
-                style: TextStyle(
-                    color: Color(0xff41B746),
-                    decoration: TextDecoration.underline,
-                    decorationColor: Color(0xff41B746),
-                    fontSize: 20),
+            GestureDetector(
+              onTap: (){
+                _launchUrl();
+              },
+              child: Center(
+                child: Text(
+                  context.translate.privacy,
+                  style: TextStyle(
+                      color: Color(0xff41B746),
+                      decoration: TextDecoration.underline,
+                      decorationColor: Color(0xff41B746),
+                      fontSize: 20),
+                ),
               ),
             ),
           ],
         ),
       ),
     );
+
   }
+
+  final Uri _url = Uri.parse('https://sites.google.com/view/uni-live-privacy-policy');
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
+  }
+
 
   Row greetingText() {
     var hour = DateTime.now().hour;
@@ -1231,6 +1326,14 @@ class _HomeBodyState extends State<HomeBody> {
     await prefs.setString('savedLocale', language);
   }
 
+  List<String>? catList =  [];
+  getCategoryListasync()  async {
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     catList =  await prefs.getStringList("catList");
+     setState(() {
+     });
+  }
+
   String getExpenseByCategory(String category) {
     double totalExpense = 0;
     for(var expense in expenseData){
@@ -1253,8 +1356,6 @@ class _HomeBodyState extends State<HomeBody> {
       e4 = totalExpense;
     }
 
-
-
     return totalExpense.toString();
   }
 
@@ -1262,6 +1363,10 @@ class _HomeBodyState extends State<HomeBody> {
   void setExpenseStatistics(String filter){
     expenseStatisticTotal = 0;
      if(filter == "day"){
+       setState(() {
+         expenseStatisticTotal = 0;
+       });
+       print(expenseStatisticTotal);
        for(var expense in expenseData){
          if(DateTime.parse(expense["expenseDate"]).day == DateTime.now().day){
            setState(() {
@@ -1271,33 +1376,58 @@ class _HomeBodyState extends State<HomeBody> {
          }
        }
      }else if(filter == "week"){
+       expenseStatisticTotal = 0;
       for(var expense in expenseData){
-        if(DateTime.parse(expense["expenseDate"]).day + 7 > DateTime.now().day){
-          expenseStatisticTotal += expense["expense"];
+        if((((DateTime.parse(expense["expenseDate"]).month - 1) * 30) + DateTime.parse(expense["expenseDate"]).day) + 7 > (((DateTime.now().month - 1) * 30) + DateTime.now().day)){
+          setState(() {
+            expenseStatisticTotal += expense["expense"];
+            print(expenseStatisticTotal);
+          });
         }
       }
     }else if(filter == "month"){
+       expenseStatisticTotal = 0;
       for(var expense in expenseData){
         if(DateTime.parse(expense["expenseDate"]).month == DateTime.now().month){
-          expenseStatisticTotal += expense["expense"];
+          setState(() {
+            expenseStatisticTotal += expense["expense"];
+          });
         }
       }
     }else if(filter == "year"){
+       expenseStatisticTotal = 0;
       for(var expense in expenseData){
         if(DateTime.parse(expense["expenseDate"]).year == DateTime.now().year){
-          expenseStatisticTotal += expense["expense"];
+          setState(() {
+            expenseStatisticTotal += expense["expense"];
+          });
         }
       }
     }
+
+     print(expenseStatisticTotal);
   }
 
 
+
 }
+
+
 
 class ChartData {
   ChartData(this.x, this.y);
   final int x;
   final double? y;
+}
+
+Future<String> _loadCurrency() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('currencyCode') ?? "USD";
+}
+
+_currencyRateDef() async {
+  currencyCode = await _loadCurrency();
+  currencyRate = await exchangeCurrency("USD", currencyCode, 1);
 }
 
 Future<double> exchangeCurrency(

@@ -9,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:unilive/core/extensions/l10n.extensions.dart';
 
+import 'db_helper.dart';
 import 'expense.dart';
 import 'home.dart';
 
@@ -33,26 +34,129 @@ class CategoryBody extends StatefulWidget {
   State<CategoryBody> createState() => _CategoryBodyState();
 }
 
-class _CategoryBodyState extends State<CategoryBody> {
-  List<Expense> expenseList = [];
 
-  Expense expense = Expense("clothes", "Nike", DateTime.now(), 125.23);
-  Expense expense2 = Expense(
-      "shop", "Zara", DateTime.now().subtract(Duration(hours: 2)), 111.23);
-  Expense expense3 =
-      Expense("eat", "KFC", DateTime.now().subtract(Duration(hours: 3)), 22.23);
-  Expense expense4 = Expense(
-      "clothes", "Abibas", DateTime.now().subtract(Duration(hours: 4)), 65.23);
-  Expense expense5 = Expense(
-      "eat", "PizzaHut", DateTime.now().subtract(Duration(hours: 5)), 9.23);
+
+
+List<Map<String, dynamic>> data = [];
+List<Map<String, dynamic>> earningData = [];
+List<Map<String, dynamic>> expenseData = [];
+
+List<Map<String, dynamic>> expenseToday = [];
+List<Map<String, dynamic>> expenseYesterday = [];
+List<Map<String, dynamic>> expenseThisWeek = [];
+
+
+Map<int, bool> clickedMap = {};
+
+class _CategoryBodyState extends State<CategoryBody> {
+
+  double totalExpense = 0.0;
+  double thisWeekExpense = 0.0;
+  List<double> expenseWeekDayList = [0.0,0.0,0.0,0.0,0.0,0.0,0.0];
+
+  int selectedElementID = 0;
+
+
+
+
+
+
+
+  Color notClickedColor = Colors.white;
+  Color clickedColor = Colors.white;
+
+
+
+
+
+
+  Future<void> getEarning() async {
+    DbHelper dbHelper = DbHelper();
+    await dbHelper.open();
+    data = await dbHelper.getData();
+    earningData.clear();
+    expenseData.clear();
+    expenseToday.clear();
+    expenseYesterday.clear();
+    expenseThisWeek.clear();
+
+    for (var d in data) {
+      if (d["category"] == "salary") {
+        earningData.add(d);
+      } else {
+        expenseData.add(d);
+      }
+    }
+
+
+
+    expenseData = expenseData.reversed.toList();
+
+
+    await setTotalExpense();
+
+
+  }
+
+
+
+
+  Future<void> setTotalExpense() async {
+    double total = 0.0;
+    double thisWeek = 0.0;
+    expenseWeekDayList = [0.0,0.0,0.0,0.0,0.0,0.0,0.0];
+
+    for (var expense in expenseData) {
+      total += expense["expense"];
+
+      clickedMap.addAll({expense["id"]:false});
+
+      expenseWeekDayList[DateTime.parse(expense["expenseDate"]).weekday-1] += expense["expense"]!;
+
+      if (DateTime.parse(expense["expenseDate"]).day == DateTime.now().day) {
+        thisWeek += expense["expense"];
+
+        expenseToday.add(expense);
+
+
+
+      }else if (DateTime.parse(expense["expenseDate"]).add(Duration(days: 1)).day  == DateTime.now().day) {
+        thisWeek += expense["expense"];
+
+        expenseYesterday.add(expense);
+      }else if((((DateTime.parse(expense["expenseDate"]).month - 1) * 30) + DateTime.parse(expense["expenseDate"]).day) + 7 > (((DateTime.now().month - 1) * 30) + DateTime.now().day)){
+        thisWeek += expense["expense"];
+
+        expenseThisWeek.add(expense);
+      }
+    }
+
+
+
+
+
+    setState(() {
+      totalExpense = total;
+      thisWeekExpense = thisWeek;
+    });
+
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      getEarning();
+    });
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
-    expenseList.add(expense);
-    expenseList.add(expense2);
-    expenseList.add(expense3);
-    expenseList.add(expense4);
-    expenseList.add(expense5);
 
     return Container(
       child: Column(
@@ -83,14 +187,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                 ),
                 Row(
                   children: [
-                    Icon(
-                      Icons.edit_note,
-                      color: Colors.white,
-                    ),
-                    Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                    ),
+
                   ],
                 )
               ],
@@ -119,7 +216,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                         height: 8,
                       ),
                       Text(
-                        "\$15,312.22",
+                        "\$${totalExpense}",
                         style: TextStyle(color: Colors.white, fontSize: 40),
                       ),
                       SizedBox(
@@ -133,7 +230,7 @@ class _CategoryBodyState extends State<CategoryBody> {
                             style: TextStyle(color: Colors.white, fontSize: 13),
                           ),
                           Text(
-                            "\$2.443,41",
+                            "\$${thisWeekExpense}",
                             style: TextStyle(color: Colors.white, fontSize: 13),
                           ),
                         ],
@@ -147,251 +244,14 @@ class _CategoryBodyState extends State<CategoryBody> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "\$120.6",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 60,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: Colors.green.shade300,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 5,
-                                      left: 0,
-                                      right: 0,
-                                      child: Center(
-                                        child: Text(
-                                          context.translate.monday
-                                              .toUpperCase()
-                                              .substring(0, 3),
-                                          style: TextStyle(
-                                              color: Colors.green.shade100),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "\$160.2",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 90,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: Colors.green.shade300,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 5,
-                                      left: 0,
-                                      right: 0,
-                                      child: Center(
-                                        child: Text(
-                                          context.translate.tuesday
-                                              .toUpperCase()
-                                              .substring(0, 3),
-                                          style: TextStyle(
-                                              color: Colors.green.shade100),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "\$83.2",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 45,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: Colors.green.shade300,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 5,
-                                      left: 0,
-                                      right: 0,
-                                      child: Center(
-                                        child: Text(
-                                          context.translate.wednesday
-                                              .toUpperCase()
-                                              .substring(0, 3),
-                                          style: TextStyle(
-                                              color: Colors.green.shade100),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "\$177.3",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 115,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: Colors.green.shade300,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 5,
-                                      left: 0,
-                                      right: 0,
-                                      child: Center(
-                                        child: Text(
-                                          context.translate.thursday
-                                              .toUpperCase()
-                                              .substring(0, 3),
-                                          style: TextStyle(
-                                              color: Colors.green.shade100),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "\$192.3",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 140,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: Colors.green.shade300,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 5,
-                                      left: 0,
-                                      right: 0,
-                                      child: Center(
-                                        child: Text(
-                                          context.translate.friday
-                                              .toUpperCase()
-                                              .substring(0, 3),
-                                          style: TextStyle(
-                                              color: Colors.green.shade100),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "\$188.2",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 125,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: Colors.green.shade300,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 5,
-                                      left: 0,
-                                      right: 0,
-                                      child: Center(
-                                        child: Text(
-                                          context.translate.saturday
-                                              .toUpperCase()
-                                              .substring(0, 3),
-                                          style: TextStyle(
-                                              color: Colors.green.shade100),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "\$12.2",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: Colors.green.shade300,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 5,
-                                      left: 0,
-                                      right: 0,
-                                      child: Center(
-                                        child: Text(
-                                          context.translate.sunday
-                                              .toUpperCase()
-                                              .substring(0, 3),
-                                          style: TextStyle(
-                                              color: Colors.green.shade100),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
+
+                            for(var day in  getDayStatistic())
+                                day,
+
+
+
+
+
                           ],
                         ),
                       )
@@ -418,119 +278,22 @@ class _CategoryBodyState extends State<CategoryBody> {
                         SizedBox(
                           height: 30,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(context.translate.expensestoday),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Text(
-                                '+ ${context.translate.addexpense}',
-                                style: TextStyle(
-                                    color: Color(0xff41B746),
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: Color(0xff41B746),
-                                    fontSize: 14),
-                              ),
-                            ),
-                          ],
-                        ),
-                        for (int i = 0; i < 5; i++)
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Image.asset(
-                                        "assets/icons/${expenseList[i].category}.png",
-                                        width: 40,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 6,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("${expenseList[i].expenseName}"),
-                                        Text(
-                                            '${expenseList[i].expenseDate.hour}:${expenseList[i].expenseDate.minute}')
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  "\$${expenseList[i].expense}",
-                                  style: TextStyle(fontSize: 25),
-                                )
-                              ],
-                            ),
-                          ),
+                        for(var container in getExpense("today"))
+                           container,
+                        for(var container in getExpense("yesterday"))
+                          container,
+                        for(var container in getExpense("week"))
+                          container,
+
+
+
+
+
+
                         SizedBox(
-                          height: 15,
+                          height: 500,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(context.translate.expensesyesterday),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        for (int i = 0; i < 5; i++)
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Image.asset(
-                                        "assets/icons/${expenseList[i].category}.png",
-                                        width: 40,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 6,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("${expenseList[i].expenseName}"),
-                                        Text(
-                                            '${expenseList[i].expenseDate.hour}:${expenseList[i].expenseDate.minute}')
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  "\$${expenseList[i].expense}",
-                                  style: TextStyle(fontSize: 25),
-                                )
-                              ],
-                            ),
-                          ),
+
                       ],
                     ),
                   ),
@@ -542,4 +305,397 @@ class _CategoryBodyState extends State<CategoryBody> {
       ),
     );
   }
+
+
+
+  getExpense(String s) {
+      List<Column> columnList = [];
+
+      if(s == "today"){
+        columnList.add(Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(context.translate.expensestoday),
+                GestureDetector(
+                  onTap: () {},
+                  child: Text(
+                    '+ ${context.translate.addexpense}',
+                    style: TextStyle(
+                        color: Color(0xff41B746),
+                        decoration: TextDecoration.underline,
+                        decorationColor: Color(0xff41B746),
+                        fontSize: 14),
+                  ),
+                ),
+              ],
+            ),
+            for (int i = 0; i < expenseToday.length; i++)
+              GestureDetector(
+                onTap: (){
+                  setState(() {
+                    clickedMap.forEach((key, value) {
+                      if (value == true) {
+                        clickedMap[key] = false;
+                      }
+                    });
+                    clickedMap[expenseToday[i]["id"]] = true;
+                    selectedElementID = expenseToday[i]["id"];
+                  });
+                  print(clickedMap);
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                    color: clickedMap[expenseToday[i]["id"]]! ? Colors.grey[300] : Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Image.asset(
+                              "assets/icons/${expenseToday[i]["category"].toString().toLowerCase().replaceAll(" ", "")}.png",
+                              width: 40,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Column(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: [
+                              Text("${expenseToday[i]["expenseName"]}"),
+                              Text(
+                                  '${DateTime.parse(expenseToday[i]["expenseDate"]).hour}:${DateTime.parse(expenseToday[i]["expenseDate"]).minute}')
+                            ],
+                          )
+                        ],
+                      ),
+                      Text(
+                        "\$${expenseToday[i]["expense"]}",
+                        style: TextStyle(fontSize: 25),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ));
+      }if(s == "yesterday"){
+        columnList.add(Column(
+          children: [
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(context.translate.expensesyesterday),
+              ],
+            ),
+            for (int i = 0; i < expenseYesterday.length; i++)
+              GestureDetector(
+                onTap: (){
+                  setState(() {
+                    clickedMap.forEach((key, value) {
+                      if (value == true) {
+                        clickedMap[key] = false;
+                      }
+                    });
+                    clickedMap[expenseToday[i]["id"]] = true;
+                    selectedElementID = expenseToday[i]["id"];
+                  });
+                  print(clickedMap);
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Image.asset(
+                              "assets/icons/${expenseYesterday[i]["category"].toString().toLowerCase().replaceAll(" ", "")}.png",
+                              width: 40,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Column(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: [
+                              Text("${expenseYesterday[i]["expenseName"]}"),
+                              Text(
+                                  '${DateTime.parse(expenseYesterday[i]["expenseDate"]).hour}:${DateTime.parse(expenseYesterday[i]["expenseDate"]).minute}'),
+                            ],
+                          )
+                        ],
+                      ),
+                      Text(
+                        "\$${expenseYesterday[i]["expense"]}",
+                        style: TextStyle(fontSize: 25),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ));
+      }if(s == "week"){
+        columnList.add(Column(
+          children: [
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("EXPENSES THIS WEEK"),
+              ],
+            ),
+            for (int i = 0; i < expenseThisWeek.length; i++)
+              GestureDetector(
+                onTap: (){
+                  setState(() {
+                    clickedMap.forEach((key, value) {
+                      if (value == true) {
+                        clickedMap[key] = false;
+                      }
+                    });
+                    clickedMap[expenseToday[i]["id"]] = true;
+                    selectedElementID = expenseToday[i]["id"];
+                  });
+                  print(clickedMap);
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Image.asset(
+                              "assets/icons/${expenseThisWeek[i]["category"].toString().toLowerCase().replaceAll(" ", "")}.png",
+                              width: 40,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Column(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: [
+                              Text("${expenseThisWeek[i]["expenseName"]}"),
+                              Text(
+                                  '${DateTime.parse(expenseThisWeek[i]["expenseDate"]).hour}:${DateTime.parse(expenseThisWeek[i]["expenseDate"]).minute}'),
+
+                            ],
+                          )
+                        ],
+                      ),
+                      Text(
+                        "\$${expenseThisWeek[i]["expense"]}",
+                        style: TextStyle(fontSize: 25),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ));
+      }
+
+
+    return columnList;
+  }
+
+  getDayStatistic() {
+    List<Column> columnList = [];
+    for(int i =1;i<=DateTime.now().weekday ;i++){
+      print(i);
+    }
+
+    for(int i =1;i<=DateTime.now().weekday ;i++){
+      columnList.add(Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            '\$${expenseWeekDayList[i-1].toString()}',
+            style: TextStyle(color: Colors.white),
+          ),
+          Stack(
+            children: [
+              Container(
+                width: 40,
+                height: getHeight(expenseWeekDayList[i-1]),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.green.shade300,
+                ),
+              ),
+              Positioned(
+                bottom: 5,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Text(
+                    findDayOfWeek(i)
+                        .toUpperCase()
+                        .substring(0, 3),
+                    style: TextStyle(
+                        color: Colors.green.shade100),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ));
+
+    }
+    for(int i =1;i<=7 - DateTime.now().weekday ;i++){
+      columnList.add(Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            '\$0.0',
+            style: TextStyle(color: Colors.white),
+          ),
+          Stack(
+            children: [
+              Container(
+                width: 40,
+                height: 35,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.green.shade300,
+                ),
+              ),
+              Positioned(
+                bottom: 5,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Text(
+                    findDayOfWeek(i)
+                        .toUpperCase()
+                        .substring(0, 3),
+                    style: TextStyle(
+                        color: Colors.green.shade100),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ));
+    }
+
+    return columnList;
+  }
+
+
+  String findDayOfWeek(int dayNumber) {
+    switch (dayNumber) {
+      case 1:
+        return context.translate.monday;
+      case 2:
+        return context.translate.tuesday;
+      case 3:
+        return context.translate.wednesday;
+      case 4:
+        return context.translate.thursday;
+      case 5:
+        return context.translate.friday;
+      case 6:
+        return context.translate.saturday;
+      case 7:
+        return context.translate.sunday;
+      default:
+        return context.translate.monday;
+    }
+  }
+
+  getHeight(double expenseWeekDayList) {
+
+    var height = expenseWeekDayList;
+
+    if(height > 1000.0){
+      return 150.0;
+    }else{
+      if((height / 10).toDouble() < 30.0){
+        return 35.0;
+      }
+      return (height / 10).toDouble();
+    }
+
+
+  }
+
+
+  bool _isVisible = false;
+  void _showDeleteConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text("Do you really want to delete the shops category?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("Delete"),
+              onPressed: () {
+                // Perform delete operation here
+                // For demonstration, let's just hide the widget
+                setState(() {
+                  _isVisible = false;
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 }
+
+

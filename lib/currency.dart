@@ -8,10 +8,13 @@ import 'package:unilive/core/extensions/l10n.extensions.dart';
 
 const int defaultColor = 0xFF07873A;
 const double spaceBetween = 15.0;
-const String defaultCurrency = "Euro";
+const String defaultCurrency = "US Dollar";
+String? selectedItem;
+String selectedItemCode = defaultCurrency;
+double currencyRate = 1;
 
 class Currency extends StatefulWidget {
-  const Currency({Key? key}) : super(key: key);
+  const Currency({super.key});
 
   @override
   State<Currency> createState() => _CurrencyState();
@@ -40,7 +43,7 @@ class _CurrencyState extends State<Currency> {
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_new, color: Color(defaultColor)),
         onPressed: () async {
-          Navigator.of(context).pop();
+          Navigator.pop(context, selectedItem);
         },
       ),
     );
@@ -59,8 +62,7 @@ class MyBody extends StatefulWidget {
 }
 
 class _MyBodyState extends State<MyBody> {
-  String? selectedItem;
-  String selectedItemCode = defaultCurrency;
+
 
   @override
   void initState() {
@@ -75,6 +77,7 @@ class _MyBodyState extends State<MyBody> {
       itemBuilder: (context, index) {
         final currencyCode = currencies.keys.elementAt(index);
         final currencyName = currencies[currencyCode]?["name"];
+        final currencySymbol = currencies[currencyCode]?["symbol"];
         return ListTile(
           selectedColor: Colors.white,
           selectedTileColor: Color(defaultColor),
@@ -85,12 +88,16 @@ class _MyBodyState extends State<MyBody> {
               Text(currencyCode),
             ],
           ),
-          onTap: () {
+          onTap: () async{
             setState(() {
               selectedItem = currencyCode;
               selectedItemCode = currencyName;
             });
-            _saveCurrency(currencyName, currencyCode);
+            _saveCurrency(currencyName, currencyCode,currencySymbol);
+            currencyRate = await exchangeCurrency("USD", currencyCode, 1);
+            //await Future.delayed(Duration(seconds: 2), () {});
+            print(currencyRate);
+            //Navigator.pop(context, currencyRate);
           },
           selected: selectedItemCode == currencyName,
         );
@@ -105,10 +112,11 @@ class _MyBodyState extends State<MyBody> {
     });
   }
 
-  _saveCurrency(String currencyDF, currencyCodeDF) async {
+  _saveCurrency(String currencyDF, currencyCodeDF, currencySymbolDF) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('currency', currencyDF);
     await prefs.setString('currencyCode', currencyCodeDF);
+    await prefs.setString('currencySymbol', currencySymbolDF);
   }
 }
 
@@ -161,3 +169,10 @@ Map<String, Map<String, String>> currencies = {
   "YER": {"name": "Yemeni Rial", "symbol": "YER"},
   "ZWL": {"name": "Zimbabwean Dollar", "symbol": "ZWL"}
 };
+
+Future<double> exchangeCurrency(
+    String first, String second, double amount) async {
+  CurrencyRate rate =
+  await LiveCurrencyRate.convertCurrency(first, second, amount);
+  return rate.result;
+}
