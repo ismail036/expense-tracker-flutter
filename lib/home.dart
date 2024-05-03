@@ -120,6 +120,8 @@ class _HomeBodyState extends State<HomeBody> {
 
     await setTotalEarning();
     await setTotalExpense();
+
+    setExpenseStatistics("day");
   }
 
   Future<void> setTotalEarning() async {
@@ -158,6 +160,9 @@ class _HomeBodyState extends State<HomeBody> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     currencyRate = prefs.getDouble('currencyRate') ?? 1;
     currencySymbol = prefs.getString('currencySymbol') ?? "\$";
+    if(currencyRate < 1){
+      currencyRate = 1;
+    }
   }
 
   @override
@@ -166,8 +171,8 @@ class _HomeBodyState extends State<HomeBody> {
     super.initState();
     getEarning();
     getCategoryListasync();
-    setExpenseStatistics("day");
     setCurrencyDetails();
+    selectedTimeFilter = "day";
   }
 
   var format = NumberFormat("#,##0.00", "tr_TR");
@@ -176,6 +181,9 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     List<String> abbreviatedMonths = initList(context);
+
+
+
     return Container(
       padding: EdgeInsets.all(16),
       child: SingleChildScrollView(

@@ -226,7 +226,7 @@ Map<String, String> initMap(BuildContext context) {
     "assets/icons/shop.png": context.translate.shop,
     "assets/icons/eat.png": context.translate.eat,
     "assets/icons/gifts.png": context.translate.gifts,
-    "assets/icons/education10x.png": context.translate.education,
+    "assets/icons/education.png": context.translate.education,
     "assets/icons/insurance.png": context.translate.insurance,
     "assets/icons/childrensproducts.png": context.translate.childrensproducts,
     "assets/icons/taxes.png": context.translate.taxes,

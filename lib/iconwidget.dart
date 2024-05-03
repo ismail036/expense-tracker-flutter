@@ -16,7 +16,7 @@ class _ImageSelectorWidgetState extends State<ImageSelectorWidget> {
     "assets/icons/shop.png",
     "assets/icons/eat.png",
     "assets/icons/gifts.png",
-    "assets/icons/education10x.png",
+    "assets/icons/education.png",
     "assets/icons/insurance.png",
     "assets/icons/childrensproducts.png",
   ];
